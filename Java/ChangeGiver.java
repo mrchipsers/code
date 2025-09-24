@@ -39,7 +39,6 @@ public class ChangeGiver{
         ichange = ichange % 5;
         
         int pennies = ichange;
-        ichange = ichange % 1;
         
         System.out.println("Twenty dollar bills: " + twenty + 
         " Ten dollar bills: " + ten + 
@@ -50,5 +49,7 @@ public class ChangeGiver{
         " Dimes: " + dimes +
         " Nickels: " + nickels +
         " Pennies: " + pennies);
+
+        reader.close();
     }
 }

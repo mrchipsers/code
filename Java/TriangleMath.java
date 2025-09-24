@@ -10,6 +10,7 @@ public class TriangleMath{
         double angle = reader.nextDouble();
         double perimeter = TriangleMath.computeTrianglePerimeter(sideA, sideB, angle);
         System.out.println("The perimeter is: " + perimeter);
+        reader.close(); 
     }
         
     public static double computeTrianglePerimeter(double sideA, double sideB, double angle){

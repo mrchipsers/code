@@ -43,5 +43,6 @@ public class WebPageCreator{
         String html = head + body;
         html = surroundWithTag("html", html);
         System.out.println(html);
+        input.close();  
     }
 }

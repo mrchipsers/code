@@ -18,6 +18,7 @@ public class sorted{
             System.out.println("please enter an integer");
             list[i] = input.nextInt();
         }
+        input.close();
         return list;
     }
 

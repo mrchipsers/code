@@ -7,6 +7,7 @@ public class DayConverter{
         int hours = daysToHours(days);
         int minutes = hoursToMinutes(hours);
         System.out.println(days+" days make "+minutes+" minutes");
+        input.close();
     }
     public static int hoursToMinutes(int hours){
         return hours*60;
