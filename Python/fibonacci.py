@@ -8,5 +8,5 @@ def make_fibonacci(n: int):
         else:
             flist.append(flist[-1]+flist[-2])
     return flist
-for i in range(10):
-    print(make_fibonacci(i))
+n=int(input("how many numbers of the fibonacci sequence do you want generated?"))
+print(make_fibonacci(n))
