@@ -1,5 +1,5 @@
 public class test{
-    static int timer_default = 50;
+    static int timer_default = 500;
     static int timer = timer_default;
     public static void main(String[] args){
         System.out.println("this is a test for timers");
