@@ -9,9 +9,17 @@ public class TripEvaluator{
         if (distance<0) {
             System.out.println("Invalid Input");
         }else if (calculateFlightCost(distance)>calculateCarCost(distance, ferry)){
-            System.out.println("You should take a car, the cost is: $"+calculateCarCost(distance, ferry));
+            if (calculateCarCost(distance, ferry)>calculateTrainCost(distance)){
+                System.out.println("You should take the train, the cost is: "+calculateTrainCost(distance));
+            }else{
+                System.out.println("You should take the car, the cost is: "+calculateCarCost(distance, ferry));
+            }
         }else{
-            System.out.println("You should take a plane, the cost is: $"+calculateFlightCost(distance));
+            if (calculateFlightCost(distance)>calculateTrainCost(distance)){
+                System.out.println("You should take the train, the cost is: "+calculateTrainCost(distance));
+            }else{
+                System.out.println("You should take the plane, the cost is: "+calculateFlightCost(distance));
+            }
         }
     }
     public static double calculateFlightCost(double distance){
@@ -20,6 +28,10 @@ public class TripEvaluator{
     }
     public static double calculateCarCost(double distance, double ferry){
         double cost = (distance*0.4)+ferry;
+        return cost;
+    }
+    public static double calculateTrainCost(double distance){
+        double cost = distance*0.25;
         return cost;
     }
 }
