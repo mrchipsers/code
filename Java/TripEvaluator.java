@@ -16,17 +16,17 @@ public class TripEvaluator{
         double[] car = calculateCarCost(distance, ferry);
         double carcost = car[0];
         double cartime = car[1];
-        double cscore=  carcost+cartime;
+        double cscore=  (0.7*carcost)+(0.3*cartime);
         
         double[] plane = calculateFlightCost(distance);
         double planecost = plane[0];
         double planetime = plane[1];
-        double pscore = planecost+planetime;
+        double pscore = (0.7*planecost)+(0.3*planetime);
        
         double[] train = calculateTrainCost(distance);
         double traincost = train[0];
         double traintime = train[1];
-        double tscore = traincost+traintime;
+        double tscore = (0.7*traincost)+(0.3*traintime);
        
         if (cscore<pscore && cscore<tscore){
             System.out.println("You should take the car. it costs "+carcost+" and will take "+cartime+" hours");
