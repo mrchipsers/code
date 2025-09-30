@@ -52,13 +52,12 @@ public class TripEvaluator{
         double[] list = {cost, time};
         return list;
     }
-    
+
     public static double[] calculateTrainCost(double distance){
         double cost = distance*0.25;
         double time = (distance/350)+0.5;
         time = ((int)(time*100))/100.0;
         double[] list = {cost, time};
         return list;
-        
     }
 }
