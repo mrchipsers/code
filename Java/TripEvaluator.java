@@ -6,21 +6,13 @@ public class TripEvaluator{
         double distance = input.nextDouble();
         System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
         double ferry = input.nextDouble();
+        input.close();
         if (distance<0) {
             System.out.println("Invalid Input");
-        }else if (calculateFlightCost(distance)>calculateCarCost(distance, ferry)){
-            if (calculateCarCost(distance, ferry)>calculateTrainCost(distance)){
-                System.out.println("You should take the train, the cost is: "+calculateTrainCost(distance));
-            }else{
-                System.out.println("You should take the car, the cost is: "+calculateCarCost(distance, ferry));
-            }
-        }else{
-            if (calculateFlightCost(distance)>calculateTrainCost(distance)){
-                System.out.println("You should take the train, the cost is: "+calculateTrainCost(distance));
-            }else{
-                System.out.println("You should take the plane, the cost is: "+calculateFlightCost(distance));
-            }
+            return;
         }
+        if 
+        
     }
     public static double calculateFlightCost(double distance){
         double cost = (distance*0.2)+200;
