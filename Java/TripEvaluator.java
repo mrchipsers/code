@@ -16,30 +16,40 @@ public class TripEvaluator{
         double[] car = calculateCarCost(distance, ferry);
         double carcost = car[0];
         double cartime = car[1];
+        long carhours = Math.round(cartime-(cartime%(cartime/cartime)));
+        long carminutes = Math.round((cartime%(cartime/cartime))*100);
         double cscore=  (0.7*carcost)+(0.3*cartime);
         
         double[] plane = calculateFlightCost(distance);
         double planecost = plane[0];
         double planetime = plane[1];
+        long planehours = Math.round(planetime-(planetime%(planetime/planetime)));
+        long planeminutes = Math.round((planetime%(planetime/planetime))*100);
         double pscore = (0.7*planecost)+(0.3*planetime);
        
         double[] train = calculateTrainCost(distance);
         double traincost = train[0];
         double traintime = train[1];
+        long trainhours = Math.round(traintime-(traintime%(traintime/traintime)));
+        long trainminutes = Math.round((traintime%(traintime/traintime))*100);
         double tscore = (0.7*traincost)+(0.3*traintime);
        
         if (cscore<pscore && cscore<tscore){
-            System.out.println("You should take the car. it costs "+carcost+" and will take "+cartime+" hours");
+            System.out.println("You should take the car. it costs "+carcost+" and will take "+carhours+" hours and "+carminutes+" minutes");
         }else if (pscore<cscore && pscore<tscore){
-            System.out.println("You should take the plane. it costs "+planecost+" and will take "+planetime+" hours");
+            System.out.println("You should take the car. it costs "+planecost+" and will take "+planehours+" hours and "+planeminutes+" minutes");
         }else{
-            System.out.println("You should take the train. it costs "+traincost+" and will take "+traintime+" hours");
+            System.out.println("You should take the car. it costs "+planecost+" and will take "+trainhours+" hours and "+trainminutes+" minutes");
         }
     }
 
     public static double[] calculateFlightCost(double distance){
         double cost = (distance*0.2)+200;
         double time = (distance/900)+3;
+        double dtime = time%(time/time);
+        time -= dtime;
+        dtime = (dtime*60)/100;
+        time += dtime;
         time = ((int)(time*100))/100.0;
         double[] list = {cost, time};
         return list;
@@ -48,6 +58,10 @@ public class TripEvaluator{
     public static double[] calculateCarCost(double distance, double ferry){
         double cost = (distance*0.4)+ferry;
         double time = distance/100;
+        double dtime = time%(time/time);
+        time -= dtime;
+        dtime = (dtime*60)/100;
+        time += dtime;
         time = ((int)(time*100))/100.0;
         double[] list = {cost, time};
         return list;
@@ -56,6 +70,10 @@ public class TripEvaluator{
     public static double[] calculateTrainCost(double distance){
         double cost = distance*0.25;
         double time = (distance/350)+0.5;
+        //double dtime = time%(time/time);
+        //time -= dtime;
+        //dtime = (dtime*60)/100;
+        //time += dtime;
         time = ((int)(time*100))/100.0;
         double[] list = {cost, time};
         return list;
