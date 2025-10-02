@@ -37,9 +37,9 @@ public class TripEvaluator{
         if (cscore<pscore && cscore<tscore){
             System.out.println("You should take the car. it costs "+carcost+" and will take "+carhours+" hours and "+carminutes+" minutes");
         }else if (pscore<cscore && pscore<tscore){
-            System.out.println("You should take the car. it costs "+planecost+" and will take "+planehours+" hours and "+planeminutes+" minutes");
+            System.out.println("You should take the plane. it costs "+planecost+" and will take "+planehours+" hours and "+planeminutes+" minutes");
         }else{
-            System.out.println("You should take the car. it costs "+planecost+" and will take "+trainhours+" hours and "+trainminutes+" minutes");
+            System.out.println("You should take the train. it costs "+traincost+" and will take "+trainhours+" hours and "+trainminutes+" minutes");
         }
     }
 
@@ -70,10 +70,10 @@ public class TripEvaluator{
     public static double[] calculateTrainCost(double distance){
         double cost = distance*0.25;
         double time = (distance/350)+0.5;
-        //double dtime = time%(time/time);
-        //time -= dtime;
-        //dtime = (dtime*60)/100;
-        //time += dtime;
+        double dtime = time%(time/time);
+        time -= dtime;
+        dtime = (dtime*60)/100;
+        time += dtime;
         time = ((int)(time*100))/100.0;
         double[] list = {cost, time};
         return list;
