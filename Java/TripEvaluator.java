@@ -16,7 +16,7 @@ public class TripEvaluator{
         double[] car = calculateCarCost(distance, ferry);
         double carcost = car[0];
         double cartime = car[1];
-        double cscore = (0.7*carcost)+(0.3*cartime);
+        double cscore = (0.5*carcost)+(0.5*cartime);
         
         double[] plane = calculateFlightCost(distance);
         double planecost = plane[0];
@@ -26,7 +26,7 @@ public class TripEvaluator{
         double[] train = calculateTrainCost(distance);
         double traincost = train[0];
         double traintime = train[1];
-        double tscore = (0.7*traincost)+(0.3*traintime);
+        double tscore = (0.6*traincost)+(0.4*traintime);
        
         if (cscore<pscore && cscore<tscore){
             long[] ctime = decimalTimeConvert(cartime);
