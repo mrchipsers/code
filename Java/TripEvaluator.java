@@ -29,20 +29,11 @@ public class TripEvaluator{
         double tscore = (0.6*traincost)+(0.4*traintime);
        
         if (cscore<pscore && cscore<tscore){
-            long[] ctime = decimalTimeConvert(cartime);
-            long carhours = ctime[0];
-            long carminutes = ctime[1];
-            System.out.println("You should take the car. it costs "+carcost+" and will take "+carhours+" hours and "+carminutes+" minutes");
+            System.out.println("You should take the car. it costs "+carcost+" and will take "+(decimalTimeConvert(cartime)[0])+" hours and "+(decimalTimeConvert(cartime)[1])+" minutes");
         }else if (pscore<cscore && pscore<tscore){
-            long[] ptime = decimalTimeConvert(planetime);
-            long planehours = ptime[0];
-            long planeminutes = ptime[1];
-            System.out.println("You should take the plane. it costs "+planecost+" and will take "+planehours+" hours and "+planeminutes+" minutes");
+            System.out.println("You should take the plane. it costs "+planecost+" and will take "+(decimalTimeConvert(planetime)[0])+" hours and "+(decimalTimeConvert(planetime)[1])+" minutes");
         }else{
-            long[] ttime = decimalTimeConvert(traintime);
-            long trainhours = ttime[0];
-            long trainminutes = ttime[1];
-            System.out.println("You should take the train. it costs "+traincost+" and will take "+trainhours+" hours and "+trainminutes+" minutes");
+            System.out.println("You should take the train. it costs "+traincost+" and will take "+(decimalTimeConvert(traintime)[0])+" hours and "+(decimalTimeConvert(traintime)[1])+" minutes");
         }
     }
 
