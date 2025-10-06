@@ -29,11 +29,14 @@ public class TripEvaluator{
         double tscore = (0.6*traincost)+(0.4*traintime);
        
         if (cscore<pscore && cscore<tscore){
-            System.out.println("You should take the car. it costs "+carcost+" and will take "+(decimalTimeConvert(cartime)[0])+" hours and "+(decimalTimeConvert(cartime)[1])+" minutes");
+            long[] time = decimalTimeConvert(cartime);
+            System.out.println("You should take the car. it costs "+carcost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
         }else if (pscore<cscore && pscore<tscore){
-            System.out.println("You should take the plane. it costs "+planecost+" and will take "+(decimalTimeConvert(planetime)[0])+" hours and "+(decimalTimeConvert(planetime)[1])+" minutes");
+            long[] time = decimalTimeConvert(planetime);
+            System.out.println("You should take the plane. it costs "+planecost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
         }else{
-            System.out.println("You should take the train. it costs "+traincost+" and will take "+(decimalTimeConvert(traintime)[0])+" hours and "+(decimalTimeConvert(traintime)[1])+" minutes");
+            long[] time = decimalTimeConvert(traintime);
+            System.out.println("You should take the train. it costs "+traincost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
         }
     }
 
