@@ -1,12 +1,9 @@
 import java.util.Scanner;
 public class TripEvaluator{
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("how far are you going in km?");
-        double distance = input.nextDouble();
-        System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
-        double ferry = input.nextDouble();
-        input.close();
+        double[] in = userInput();
+        double distance = in[0];
+        double ferry = in[1];
         
         if (distance<0) {
             System.out.println("Invalid Input");
@@ -38,6 +35,17 @@ public class TripEvaluator{
             long[] time = decimalTimeConvert(traintime);
             System.out.println("You should take the train. it costs "+traincost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
         }
+    }
+
+    public static double[] userInput(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("how far are you going in km?");
+        double distance = input.nextDouble();
+        System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
+        double ferry = input.nextDouble();
+        input.close();
+        double[] out = {distance, ferry};
+        return out;
     }
 
     public static double[] calculateFlightCost(double distance){
