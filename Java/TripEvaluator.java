@@ -1,13 +1,19 @@
 import java.util.Scanner;
 public class TripEvaluator{
     public static void main(String[] args) {
-        double[] in = userInput();
-        double distance = in[0];
-        double ferry = in[1];
-        
+        Scanner input = new Scanner(System.in);
+        System.out.println("how far are you going in km?");
+        double distance = input.nextDouble();
+        System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
+        double ferry = input.nextDouble();
+        input.close();
+        tripEval(distance, ferry);
+    }
+
+    public static String tripEval(double distance, double ferry){
         if (distance<0) {
             System.out.println("Invalid Input");
-            return;
+            return null;
         }
         
         double[] car = calculateCarCost(distance, ferry);
@@ -28,25 +34,18 @@ public class TripEvaluator{
         if (cscore<pscore && cscore<tscore){
             long[] time = decimalTimeConvert(cartime);
             System.out.println("You should take the car. it costs "+carcost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
+            return "You should take the car. it costs "+carcost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes";
         }else if (pscore<cscore && pscore<tscore){
             long[] time = decimalTimeConvert(planetime);
             System.out.println("You should take the plane. it costs "+planecost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
+            return "You should take the plane. it costs "+planecost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes";
         }else{
             long[] time = decimalTimeConvert(traintime);
             System.out.println("You should take the train. it costs "+traincost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
+            return "You should take the train. it costs "+traincost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes";
         }
     }
-
-    public static double[] userInput(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("how far are you going in km?");
-        double distance = input.nextDouble();
-        System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
-        double ferry = input.nextDouble();
-        input.close();
-        double[] out = {distance, ferry};
-        return out;
-    }
+    
 
     public static double[] calculateFlightCost(double distance){
         double cost = (distance*0.2)+200;
