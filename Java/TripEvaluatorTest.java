@@ -31,6 +31,9 @@ public class TripEvaluatorTest {
     @Test
     public void testTripEval(){
         assertEquals("You should take the train. it costs "+125.0+" and will take "+1+" hours and "+55+" minutes",TripEvaluator.tripEval(500,30));
+        assertEquals("You should take the plane. it costs "+1200.0+" and will take "+8+" hours and "+33+" minutes",TripEvaluator.tripEval(5000,30));
+        assertEquals("You should take the car. it costs "+0.4+" and will take "+0+" hours and "+0+" minutes",TripEvaluator.tripEval(1,0));
         assertEquals(null, TripEvaluator.tripEval(-1, 30));
+        assertEquals(null, TripEvaluator.tripEval(30, -1));
     }
 }
