@@ -15,6 +15,7 @@ public class sorter{
             list.add(input.nextInt());
             c++;
         }
+        input.close();
         while (starting_index<list.size()) {
             while (d<list.size()){
                 if (list.get(d)<list.get(smallest_index)) {

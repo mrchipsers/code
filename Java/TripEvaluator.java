@@ -16,33 +16,29 @@ public class TripEvaluator{
             return null;
         }
         
-        double[] car = calculateCarCost(distance, ferry);
-        double carcost = car[0];
-        double cartime = car[1];
-        double cscore = (0.7*carcost)+(0.3*cartime);
-        
-        double[] plane = calculateFlightCost(distance);
-        double planecost = plane[0];
-        double planetime = plane[1];
-        double pscore = (0.7*planecost)+(0.3*planetime);
+        double[][] transport = {calculateCarCost(distance, ferry), calculateFlightCost(distance), calculateTrainCost(distance)};
+        double[] cost = {0, 0, 0};
+        double[] time = {0, 0, 0};
+        double[] score = {0, 0, 0};
+
+        for (int i = 0; i<3; i++){
+            cost[i] = transport[i][0];
+            time[i] = transport[i][1];
+            score[i] = cost[i]+time[i];
+        }
        
-        double[] train = calculateTrainCost(distance);
-        double traincost = train[0];
-        double traintime = train[1];
-        double tscore = (0.7*traincost)+(0.3*traintime);
-       
-        if (cscore<pscore && cscore<tscore){
-            long[] time = decimalTimeConvert(cartime);
-            System.out.println("You should take the car. it costs "+carcost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
-            return "You should take the car. it costs "+carcost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes";
-        }else if (pscore<cscore && pscore<tscore){
-            long[] time = decimalTimeConvert(planetime);
-            System.out.println("You should take the plane. it costs "+planecost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
-            return "You should take the plane. it costs "+planecost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes";
+        if (score[0]<score[1] && score[0]<score[2]){
+            long[] ctime = decimalTimeConvert(time[0]);
+            System.out.println("You should take the car. it costs "+cost[0]+" and will take "+(ctime[0])+" hours and "+(ctime[1])+" minutes");
+            return "You should take the car. it costs "+cost[0]+" and will take "+(ctime[0])+" hours and "+(ctime[1])+" minutes";
+        }else if (score[1]<score[0] && score[1]<score[2]){
+            long[] ptime = decimalTimeConvert(time[1]);
+            System.out.println("You should take the plane. it costs "+cost[1]+" and will take "+(ptime[0])+" hours and "+(ptime[1])+" minutes");
+            return "You should take the plane. it costs "+cost[1]+" and will take "+(ptime[0])+" hours and "+(ptime[1])+" minutes";
         }else{
-            long[] time = decimalTimeConvert(traintime);
-            System.out.println("You should take the train. it costs "+traincost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes");
-            return "You should take the train. it costs "+traincost+" and will take "+(time[0])+" hours and "+(time[1])+" minutes";
+            long[] ttime = decimalTimeConvert(time[2]);
+            System.out.println("You should take the train. it costs "+cost[2]+" and will take "+(ttime[0])+" hours and "+(ttime[1])+" minutes");
+            return "You should take the train. it costs "+cost[2]+" and will take "+(ttime[0])+" hours and "+(ttime[1])+" minutes";
         }
     }
     
