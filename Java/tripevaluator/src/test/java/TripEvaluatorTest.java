@@ -29,6 +29,7 @@ public class TripEvaluatorTest {
         assertEquals(1,(TripEvaluator.decimalTimeConvert(1.9285714285714286)[0]));
         assertEquals(55,(TripEvaluator.decimalTimeConvert(1.9285714285714286)[1]));
     }
+    
     @Test
     public void testTripEval(){
         assertEquals("You should take the train. it costs "+125.0+" and will take "+1+" hours and "+55+" minutes",TripEvaluator.tripEval(500,30));
@@ -36,5 +37,10 @@ public class TripEvaluatorTest {
         assertEquals("You should take the car. it costs "+0.4+" and will take "+0+" hours and "+0+" minutes",TripEvaluator.tripEval(1,0));
         assertEquals(null, TripEvaluator.tripEval(-1, 30));
         assertEquals(null, TripEvaluator.tripEval(30, -1));
+    }
+
+    @Test
+    public void TripEvaluator(){
+        new TripEvaluator();
     }
 }

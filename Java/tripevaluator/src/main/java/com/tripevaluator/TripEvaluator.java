@@ -9,6 +9,7 @@ public class TripEvaluator{
         double ferry = input.nextDouble();
         input.close();
         tripEval(distance, ferry);
+        return;
     }
 
     public static String tripEval(double distance, double ferry){
