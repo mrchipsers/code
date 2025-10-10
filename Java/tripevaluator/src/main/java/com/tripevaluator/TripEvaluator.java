@@ -2,21 +2,25 @@ package com.tripevaluator;
 import java.util.Scanner;
 public class TripEvaluator{
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("how far are you going in km?");
-        double distance = input.nextDouble();
-        System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
-        double ferry = input.nextDouble();
-        input.close();
-        tripEval(distance, ferry);
+        boolean goodData = false;
+        while (goodData){
+            Scanner input = new Scanner(System.in);
+            System.out.println("how far are you going in km?");
+            double distance = input.nextDouble();
+            System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
+            double ferry = input.nextDouble();
+            input.close();
+            tripEval(distance, ferry);
+
+            if (distance<0 || ferry<0) {
+            System.out.println("Invalid Input");
+            }else{
+                goodData = true;
+            }
+        }
     }
 
     public static String tripEval(double distance, double ferry){
-        if (distance<0 || ferry<0) {
-            System.out.println("Invalid Input");
-            return null;
-        }
-        
         double[][] transport = {calculateCarCost(distance, ferry), calculateFlightCost(distance), calculateTrainCost(distance)};
         double[] cost = {0, 0, 0};
         double[] time = {0, 0, 0};
