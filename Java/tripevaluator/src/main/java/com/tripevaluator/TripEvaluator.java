@@ -3,21 +3,23 @@ import java.util.Scanner;
 public class TripEvaluator{
     public static void main(String[] args) {
         boolean goodData = false;
-        while (goodData){
+        double distance = 0;
+        double ferry = 0;
+        while (!goodData){
             Scanner input = new Scanner(System.in);
             System.out.println("how far are you going in km?");
-            double distance = input.nextDouble();
+            distance = input.nextDouble();
             System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
-            double ferry = input.nextDouble();
+            ferry = input.nextDouble();
             input.close();
-            tripEval(distance, ferry);
-
+            
             if (distance<0 || ferry<0) {
             System.out.println("Invalid Input");
             }else{
                 goodData = true;
             }
         }
+        tripEval(distance, ferry);
     }
 
     public static String tripEval(double distance, double ferry){
