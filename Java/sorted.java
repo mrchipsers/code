@@ -1,10 +1,10 @@
 import java.util.Arrays;
 import java.util.Scanner;
 public class sorted{
+    static int numlist = 0;
     public static void main(String[] args){
         int[] list = list_maker();
-        int numlist = list.length;
-        list = sorter(list, numlist);
+        list = sorter(list);
         System.out.println("this is your sorted list:");
         System.out.println(Arrays.toString(list));
     }
@@ -12,7 +12,7 @@ public class sorted{
     public static int[] list_maker(){
         System.out.println("how many integers will be in the list?");
         Scanner input = new Scanner(System.in);
-        int numlist = input.nextInt();
+        numlist = input.nextInt();
         int[] list = new int[numlist];
         for (int i = 0; i<numlist; i++){
             System.out.println("please enter an integer");
@@ -22,7 +22,7 @@ public class sorted{
         return list;
     }
 
-    public static int[] sorter(int[] list, int numlist){
+    public static int[] sorter(int[] list){
         for ( int i = 0; i<numlist; i++) {
             int smallest_index = i;
             for (int d = i; d<numlist; d++){

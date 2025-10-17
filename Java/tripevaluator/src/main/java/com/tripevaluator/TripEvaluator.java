@@ -5,20 +5,20 @@ public class TripEvaluator{
         boolean goodData = false;
         double distance = 0;
         double ferry = 0;
+        Scanner input = new Scanner(System.in);
         while (!goodData){
-            Scanner input = new Scanner(System.in);
             System.out.println("how far are you going in km?");
             distance = input.nextDouble();
             System.out.println("how much does it cost to take the ferry? (if you aren't taking the ferry or there is no cost, input 0)");
             ferry = input.nextDouble();
-            input.close();
-            
+
             if (distance<0 || ferry<0) {
-            System.out.println("Invalid Input");
+                System.out.println("Invalid Input");
             }else{
                 goodData = true;
             }
         }
+        input.close();
         tripEval(distance, ferry);
     }
 
