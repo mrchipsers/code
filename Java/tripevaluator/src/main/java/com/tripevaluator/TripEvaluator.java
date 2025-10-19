@@ -75,7 +75,6 @@ public class TripEvaluator{
         time -= dtime;
         dtime = (dtime*60)/100;
         time += dtime;
-        time = ((int)(time*100))/100.0;
         int hours = (int)time;
         long minutes = Math.round((time%(time/time))*100);
         long[] list = {hours, minutes};
