@@ -19,12 +19,12 @@ def tripEvaluator(distance, ferry):
     time = [0, 0, 0]
     score = [0, 0, 0]
 
-    i = 0
-    while i<3:
+    
+    for i in range(3):
         cost[i] = travel[i][0]
         time[i] = travel[i][1]
         score[i] = cost[i]+time[i]
-        i+=1
+        
 
     if score[0] < score[1] and score[0] < score[2]:
         dtime = decimalTimeConvert(time[0])
@@ -60,7 +60,7 @@ def decimalTimeConvert(time):
     dtime = (dtime*60)/100
     time += dtime
     hours = int(time)
-    minutes = round((time%(1)),2)
+    minutes = int((time%(1))*100)
     list = [hours, minutes]
     return list
 
