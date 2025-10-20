@@ -2,6 +2,7 @@ package com.bonkers;
 import java.util.Scanner;
 import java.util.Random;
 public class Bonkers {
+    static Scanner input = new Scanner(System.in);
     public static void main(String[] args){
         runGame();
     }
@@ -75,7 +76,6 @@ public class Bonkers {
     }
 
     public static void playRound(String secretNum, int maxGuesses){
-        Scanner input = new Scanner(System.in);
         for (int i = 0; i<maxGuesses; i++){
             System.out.println("guess number "+(i+1));
             String guess = ""+input.nextInt();
@@ -87,12 +87,10 @@ public class Bonkers {
                 System.out.println(getClues(secretNum, guess));
             }
         }
-        input.close();
-        System.out.println("You ran out of guesses. The answer was"+secretNum+". GAME OVER!!! Thanks for playing!");
+        System.out.println("You ran out of guesses. The answer was "+secretNum+". GAME OVER!!! Thanks for playing!");
     }
 
     public static void runGame(){
-       Scanner input = new Scanner(System.in);
        System.out.println("Enter number of digits of secret number: "); 
        int numLength = input.nextInt();
        System.out.println("Enter the number of guesses the player has: "); 
@@ -112,14 +110,13 @@ public class Bonkers {
     }
 
     public static String valid(String userGuess, int numDigits){
-         Scanner input = new Scanner(System.in);
         while (true){
             if (allDigits(userGuess) && userGuess.length()==numDigits){
                 return userGuess;
             }
-            System.out.println("guess a number that is "+numDigits+"long: ");
+            System.out.println("guess a number that is "+numDigits+" digits long: ");
             userGuess = input.nextLine();
-            input.close();
-        } 
+        }
+        
     }
 }
