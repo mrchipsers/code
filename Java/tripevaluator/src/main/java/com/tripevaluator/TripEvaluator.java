@@ -31,21 +31,21 @@ public class TripEvaluator{
         for (int i = 0; i<3; i++){
             cost[i] = transport[i][0];
             time[i] = transport[i][1];
-            score[i] = cost[i];//+time[i];
+            score[i] = cost[i]+time[i];
         }
        
         if (score[0]<score[1] && score[0]<score[2]){
             long[] ctime = decimalTimeConvert(time[0]);
             System.out.println("You should take the car. it costs "+cost[0]+" and will take "+(ctime[0])+" hours and "+(ctime[1])+" minutes");
             return "You should take the car. it costs "+cost[0]+" and will take "+(ctime[0])+" hours and "+(ctime[1])+" minutes";
-        }else{ //if (score[1]<score[0] && score[1]<score[2]){
+        }else if (score[1]<score[0] && score[1]<score[2]){
             long[] ptime = decimalTimeConvert(time[1]);
             System.out.println("You should take the plane. it costs "+cost[1]+" and will take "+(ptime[0])+" hours and "+(ptime[1])+" minutes");
             return "You should take the plane. it costs "+cost[1]+" and will take "+(ptime[0])+" hours and "+(ptime[1])+" minutes";
-        //}else{
-        //   long[] ttime = decimalTimeConvert(time[2]);
-        //   System.out.println("You should take the train. it costs "+cost[2]+" and will take "+(ttime[0])+" hours and "+(ttime[1])+" minutes");
-        //   return "You should take the train. it costs "+cost[2]+" and will take "+(ttime[0])+" hours and "+(ttime[1])+" minutes";
+        }else{
+           long[] ttime = decimalTimeConvert(time[2]);
+           System.out.println("You should take the train. it costs "+cost[2]+" and will take "+(ttime[0])+" hours and "+(ttime[1])+" minutes");
+           return "You should take the train. it costs "+cost[2]+" and will take "+(ttime[0])+" hours and "+(ttime[1])+" minutes";
         }
     }
     
