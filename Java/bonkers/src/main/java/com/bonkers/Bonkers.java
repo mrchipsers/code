@@ -53,21 +53,21 @@ public class Bonkers {
     public static String getClues(String secretNum, String userGuess){
         int close = 0;
         int on = 0;
-        for (int i = 0; i<userGuess.length(); i++){
-            if (!containsCharacter(secretNum, userGuess.charAt(i))){
-                continue;
-            }else{
-                if (secretNum.charAt(i)==userGuess.charAt(i)){
-                    on++;
-                }else{
-                    close++;
-                }
-            }
-        }
-
+        
         if (secretNum.equals(userGuess)){
             return "Congratulations! Your guess is correct!";
-        }else if (concatenateClues(on, close)==""){
+        }
+        
+        for (int i = 0; i<userGuess.length(); i++){
+            if (!containsCharacter(secretNum, userGuess.charAt(i))){
+            }else if(secretNum.charAt(i)==userGuess.charAt(i)){ 
+                on++;
+            }else{
+                close++;
+            }
+        }
+        
+        if (close==0 && on==0){
             return "Bonkers";
         }else{
             return concatenateClues(on, close);
@@ -80,7 +80,7 @@ public class Bonkers {
             System.out.println("guess number "+(i+1));
             String guess = ""+input.nextInt();
             guess = valid(guess, secretNum.length());
-            if (getClues(secretNum, guess)=="Congratulations! Your guess is correct!"){
+            if (getClues(secretNum, guess).equals("Congratulations! Your guess is correct!")){
                 System.out.println("Congratulations! Your guess is correct!");
                 return;
             }else{
@@ -117,6 +117,5 @@ public class Bonkers {
             System.out.println("guess a number that is "+numDigits+" digits long: ");
             userGuess = input.nextLine();
         }
-        
     }
 }
