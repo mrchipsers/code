@@ -25,8 +25,35 @@ public class BonkersTest {
 
     @Test
     public void testAllDigits(){
-        assertEquals(true, Bonkers.allDigits("12345"));
-        assertEquals(false, Bonkers.allDigits("1@345"));
+        assertTrue(Bonkers.allDigits("12345"));
+        assertFalse(Bonkers.allDigits("1@345"));
+    }
+
+    public static boolean noRepeats(String secretNum){
+        for (int i = 0; i<secretNum.length(); i++){
+            for (int j = 0; j<secretNum.length(); j++){
+                if (i!=j && secretNum.charAt(i)==secretNum.charAt(j)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Test
+    public void testNoRepeats(){
+        assertTrue(noRepeats("1234"));
+        assertFalse(noRepeats("12234"));
+    }
+    @Test
+    public void testGenerateSecretNum(){
+        assertTrue(noRepeats(Bonkers.generateSecretNum(0)));
+        assertTrue(noRepeats(Bonkers.generateSecretNum(1)));
+        assertTrue(noRepeats(Bonkers.generateSecretNum(2)));
+        assertTrue(noRepeats(Bonkers.generateSecretNum(3)));
+        assertTrue(noRepeats(Bonkers.generateSecretNum(4)));
+        assertTrue(noRepeats(Bonkers.generateSecretNum(5)));
+        assertTrue(noRepeats(Bonkers.generateSecretNum(6)));
     }
 }
 

@@ -1,16 +1,21 @@
 import random
+import colorama
+ORANGE = "\x1b[38;5;208m"
 def instructions(maxGuesses: int):
-    print(f"you will have {maxGuesses} guesses to guess a 4 letter combination consisting of the letters r, o ,y, g, b, p, and s. After each incorrect guess, you will be given clues categorized as follows:")
+    print(f"""you will have {maxGuesses} guesses to guess a 4 colour combination consisting of the colours {colorama.Fore.RED}red{colorama.Style.RESET_ALL}, {colorama.Fore.BLUE}blue{colorama.Style.RESET_ALL}, {colorama.Fore.GREEN}green{colorama.Style.RESET_ALL}, {colorama.Fore.YELLOW}yellow{colorama.Style.RESET_ALL}, {ORANGE}orange{colorama.Style.RESET_ALL}, and white. 
+    to input the letters, input the first letters of each colour, with no repeats. 
+    Ex. for the input red, yellow, blue, green, you will input rybg. 
+    After each incorrect guess, you will be given clues categorized as follows:""")
     print("Clue:\t\tMeaning:")
-    print("None\t\tNone of the digits in your guess is correct.")
-    print("Close\t\tOne digit is correct but in the wrong position.")
-    print("@\t\tOne digit is correct and in the right position.")
+    print(f"{colorama.Fore.BLACK}None{colorama.Style.RESET_ALL}\t\tNone of the digits in your guess is correct.")
+    print(f"Close\t\tOne digit is correct but in the wrong position.")
+    print(f"{colorama.Fore.RED}@{colorama.Style.RESET_ALL}\t\tOne digit is correct and in the right position.")
 
 def containsCharacter(word: str, literal: str):
     return literal in word
 
 def generatesecretCombo():
-    options = ["r", "o", "y", "g", "b", "p", "s"]
+    options = [f"{colorama.Fore.RED}r{colorama.Style.RESET_ALL}", f"{colorama.Fore.BLUE}b{colorama.Style.RESET_ALL}", f"{colorama.Fore.GREEN}g{colorama.Style.RESET_ALL}", f"{colorama.Fore.YELLOW}y{colorama.Style.RESET_ALL}", f"{ORANGE}o{colorama.Style.RESET_ALL}", f"w"]
     random.shuffle(options)
     options = options[:4]
     return "".join(options)
@@ -18,9 +23,9 @@ def generatesecretCombo():
 def concatenateClues(countAt: int, countClose: int):
     clue = ""
     for i in range(countAt):
-        clue+="@ "
+        clue+=f"{colorama.Fore.GREEN}@ {colorama.Style.RESET_ALL}"
     for i in range(countClose):
-        clue+="Close "
+        clue+=f"{colorama.Fore.RED}Close {colorama.Style.RESET_ALL}"
     return clue
 
 def getClues(secretCombo: str, userGuess: str):
@@ -30,18 +35,15 @@ def getClues(secretCombo: str, userGuess: str):
     if secretCombo==userGuess:
         return "Congratulations! Your guess is correct!"
     
-    for i in range(len(userGuess)):
-        if containsCharacter(secretCombo, userGuess[i])!=True:
-            continue
-        elif secretCombo[i]==userGuess[i]:
+    for i, name in enumerate(userGuess):
+        if secretCombo[i]==name:
             on+=1
-        else:
+        elif containsCharacter(secretCombo, name):
             close+=1
     
     if on==0 and close==0:
-        return "None"
-    else:
-        return concatenateClues(on, close)
+        return f"{colorama.Fore.BLACK}None{colorama.Style.RESET_ALL}"
+    return concatenateClues(on, close)
     
 def playRound(secretCombo: str, maxGuesses: int):
     for i in range(maxGuesses):
@@ -53,6 +55,7 @@ def playRound(secretCombo: str, maxGuesses: int):
             return
         else:
             print(getClues(secretCombo, guess))
+    
     print(f"You ran out of guesses. The answer was {secretCombo}. GAME OVER!!! Thanks for playing!")
 
 def runGame():
@@ -64,7 +67,7 @@ def runGame():
 
 def isLetter(userGuess: str):
     for i in userGuess:
-        if i not in "roygbps":
+        if i not in "rbgyow":
             return False
 
     return True
@@ -74,6 +77,8 @@ def valid(userGuess: str):
         if isLetter(userGuess) and len(userGuess)==4:
             return userGuess
         
-        userGuess = input(f"guess a number that is 4 letters long and contains the letters r, o ,y, g, b, p, and s: ")
-    
-runGame()
+        userGuess = input("guess a number that is 4 letters long and contains the letters rbgyow: ")
+
+#runGame()
+instructions(10)
+print(generatesecretCombo())

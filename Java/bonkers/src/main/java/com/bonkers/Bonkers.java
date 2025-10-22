@@ -29,7 +29,7 @@ public class Bonkers {
         String num = "";
         int i = 0;
         while (i<numDigits){
-            String nextNum = ""+random.nextInt(9);
+            String nextNum = ""+random.nextInt(10);
             char nextNumChar = nextNum.charAt(0);
             if (!containsCharacter(num, nextNumChar)){
                 num+=nextNum;
@@ -59,10 +59,9 @@ public class Bonkers {
         }
         
         for (int i = 0; i<userGuess.length(); i++){
-            if (!containsCharacter(secretNum, userGuess.charAt(i))){
-            }else if(secretNum.charAt(i)==userGuess.charAt(i)){ 
+            if(secretNum.charAt(i)==userGuess.charAt(i)){ 
                 on++;
-            }else{
+            }else if (containsCharacter(secretNum, userGuess.charAt(i))){
                 close++;
             }
         }
@@ -91,13 +90,22 @@ public class Bonkers {
     }
 
     public static void runGame(){
-       System.out.println("Enter number of digits of secret number: "); 
-       int numLength = input.nextInt();
-       System.out.println("Enter the number of guesses the player has: "); 
-       int maxGuesses = input.nextInt();
-       String secretNum = generateSecretNum(numLength);
-       instructions(numLength, maxGuesses);
-       playRound(secretNum, maxGuesses);
+        int numLength = 0;
+        boolean goodLen = false;
+        while (!goodLen){
+            System.out.println("Enter the number of digits in the secret number (max of 10): "); 
+            numLength = input.nextInt(); 
+            
+            if (numLength<11){
+                goodLen = true;
+            }
+        }
+        
+        System.out.println("Enter the number of guesses the player has: "); 
+        int maxGuesses = input.nextInt();
+        String secretNum = generateSecretNum(numLength);
+        instructions(numLength, maxGuesses);
+        playRound(secretNum, maxGuesses);
     }
 
     public static boolean allDigits(String userGuess){
