@@ -96,7 +96,7 @@ public class Bonkers {
             System.out.println("Enter the number of digits in the secret number (max of 10): "); 
             numLength = input.nextInt(); 
             
-            if (numLength<11){
+            if (numLength<11 && numLength>0){
                 goodLen = true;
             }
         }

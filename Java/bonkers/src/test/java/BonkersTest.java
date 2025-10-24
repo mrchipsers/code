@@ -47,6 +47,7 @@ public class BonkersTest {
     }
     @Test
     public void testGenerateSecretNum(){
+        assertTrue(noRepeats(Bonkers.generateSecretNum(-3)));
         assertTrue(noRepeats(Bonkers.generateSecretNum(0)));
         assertTrue(noRepeats(Bonkers.generateSecretNum(1)));
         assertTrue(noRepeats(Bonkers.generateSecretNum(2)));
