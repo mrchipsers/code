@@ -30,8 +30,7 @@ public class Bonkers {
         int i = 0;
         while (i<numDigits){
             String nextNum = ""+random.nextInt(10);
-            char nextNumChar = nextNum.charAt(0);
-            if (!containsCharacter(num, nextNumChar)){
+            if (!containsCharacter(num, nextNum.charAt(0))){
                 num+=nextNum;
                 i++;
             }
