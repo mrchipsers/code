@@ -46,15 +46,31 @@ public class BonkersTest {
         assertFalse(noRepeats("12234"));
     }
     @Test
+    public void testGenerateSecretNum2(){
+        for (int i = 0; i<50; i++){
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(-3)) && Bonkers.generateSecretNum2(-3).length()==0);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(0)) && Bonkers.generateSecretNum2(0).length()==0);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(1)) && Bonkers.generateSecretNum2(1).length()==1);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(2)) && Bonkers.generateSecretNum2(2).length()==2);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(3)) && Bonkers.generateSecretNum2(3).length()==3);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(4)) && Bonkers.generateSecretNum2(4).length()==4);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(5)) && Bonkers.generateSecretNum2(5).length()==5);
+            assertTrue(noRepeats(Bonkers.generateSecretNum2(6)) && Bonkers.generateSecretNum2(6).length()==6);
+        }
+    }
+
+    @Test
     public void testGenerateSecretNum(){
-        assertTrue(noRepeats(Bonkers.generateSecretNum(-3)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(0)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(1)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(2)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(3)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(4)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(5)));
-        assertTrue(noRepeats(Bonkers.generateSecretNum(6)));
+        for (int i = 0; i<50; i++){
+            assertTrue(noRepeats(Bonkers.generateSecretNum(-3)) && Bonkers.generateSecretNum(-3).length()==0);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(0)) && Bonkers.generateSecretNum(0).length()==0);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(1)) && Bonkers.generateSecretNum(1).length()==1);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(2)) && Bonkers.generateSecretNum(2).length()==2);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(3)) && Bonkers.generateSecretNum(3).length()==3);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(4)) && Bonkers.generateSecretNum(4).length()==4);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(5)) && Bonkers.generateSecretNum(5).length()==5);
+            assertTrue(noRepeats(Bonkers.generateSecretNum(6)) && Bonkers.generateSecretNum(6).length()==6);
+        }
     }
 }
 

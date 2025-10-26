@@ -38,6 +38,21 @@ public class Bonkers {
         }
         return num;
     }
+    
+    public static String generateSecretNum2(int numDigits){
+        Random makeNum = new Random();
+        int loop = 0;
+        String secretNum="";
+        while(loop < numDigits){
+            String num = ""+makeNum.nextInt(10);
+            String secretNumStore = secretNum+num;
+            if (containsCharacter(secretNum, num.charAt(0))== false){
+                secretNum= ""+secretNumStore;
+                loop++;
+            }
+        }
+        return secretNum;
+    }
 
     public static String concatenateClues(int countAt, int countCLose){
         String clue = "";
