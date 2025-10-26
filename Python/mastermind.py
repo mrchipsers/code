@@ -62,8 +62,12 @@ def drawCircles(screenSize: tuple, screen):
             pygame.draw.circle(screen, PBLUE, (x, y), 20)
 
 def pInstructions(screen):
-    
-    return
+    font = pygame.font.SysFont(pygame.font.get_default_font(), 36)
+    textStr = f"you will have 10 guesses to guess a 4 colour combination consisting of the colours red, blue, green, yellow, orange, and white."
+    for i in textStr:
+        
+        text1 = font.render(textStr, False, PWHITE)
+        screen.blit(text1, (0, 0))
 
 def instructions():
     print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {BLUE}blue{RESET}, {GREEN}green{RESET}, {YELLOW}yellow{RESET}, {ORANGE}orange{RESET}, and white. 
@@ -179,4 +183,4 @@ def start():
     else:
         pyGame()
 
-#start()
+start()
