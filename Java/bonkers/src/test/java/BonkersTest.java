@@ -27,6 +27,7 @@ public class BonkersTest {
     public void testAllDigits(){
         assertTrue(Bonkers.allDigits("12345"));
         assertFalse(Bonkers.allDigits("1@345"));
+        assertTrue(Bonkers.allDigits("0123"));
     }
 
     public static boolean noRepeats(String secretNum){

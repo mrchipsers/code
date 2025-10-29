@@ -4,8 +4,7 @@ import java.util.Random;
 public class Bonkers {
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args){
-        //runGame();
-        validInt(10);
+        runGame();
     }
 
     public static void instructions(int numDigits, int maxGuesses){
@@ -143,7 +142,6 @@ public class Bonkers {
                 userIn = input.nextLine();
             } catch (Exception e) {
                 System.out.println("Please enter a "+numDigits+" long number. Try again.");
-                return valid(numDigits);
             }
         }
     }
