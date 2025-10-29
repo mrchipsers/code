@@ -4,7 +4,6 @@ from prompt_toolkit import ANSI
 from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
 
-
 RED = colorama.Fore.RED
 BLUE = colorama.Fore.BLUE
 GREEN = colorama.Fore.GREEN
@@ -36,62 +35,82 @@ class mastermindLexer(Lexer):
             return fragments
         return getLetter
 
-
 def instructions():
-    print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {BLUE}blue{RESET}, {GREEN}green{RESET}, {YELLOW}yellow{RESET}, {ORANGE}orange{RESET}, and white. To input the letters, input the first letters of each colour, with no repeats. Ex. for the input red, yellow, blue, green, you will input {RED}r{YELLOW}y{BLUE}b{GREEN}g{RESET}. After each incorrect guess, you will be given clues categorized as follows:""")
+    print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {ORANGE}orange{RESET}, {YELLOW}yellow{RESET}, {GREEN}green{RESET}, {BLUE}blue{RESET}, and white. 
+To input the letters, input the first letters of each colour, with no repeats. 
+Ex. for the input red, yellow, blue, green, you will input {RED}r{YELLOW}y{BLUE}b{GREEN}g{RESET}. 
+After each incorrect guess, you will be given clues categorized as follows:""")
     print("Clue:\t\tMeaning:")
     print(f"{BLACK}None{RESET}\t\tNone of the digits in your guess is correct.")
     print(f"Close\t\tOne digit is correct but in the wrong position.")
-    print(f"{RED}@{RESET}\t\tOne digit is correct and in the right position.")
+    print(f"{RED}Correct{RESET}\t\tOne digit is correct and in the right position.")
 
-def containsCharacter(word: str, literal: str):
-    return literal in word
+def containsColour(combo: str, colour: str):
+    return colour in combo
 
-def generatesecretCombo():
-    options = ["r", "b", "g", "y", "o", "w"]
+def genCombo():
+    options = ["r", "o", "y", "g", "b", "w"]
     combo = []
     for i in range(4):    
         random.shuffle(options)
         combo.append(options[0])
-    combo = "".join(combo)
-    return combo
+    scombo = "".join(combo)
+    return scombo
 
-def moreThanOne(word: str, literal: str):
-    count=0
-    for i in word:
-        if i==literal:
-            count+=1
-    return count>1
-
-def concatenateClues(countAt: int, countClose: int):
-    clue = ""
-    for i in range(countAt):
-        clue+=f"{RED}@ {RESET}"
-    for i in range(countClose):
-        clue+=f"Close "
-    return clue
+def concatClues(countAt: int, countClose: int):
+    return (f"{RED}Correct {RESET}"*countAt)+("close "*countClose)
 
 def getClues(secretCombo: str, userGuess: str):
     close = 0
     on = 0
-    seen = []
     if secretCombo==userGuess:
         return "Congratulations! Your guess is correct!"
     
-    for i, col in enumerate(userGuess):
-        if secretCombo[i]==col:
+    for i, colour in enumerate(userGuess):
+        if secretCombo[i]==colour:
             on+=1
-        elif containsCharacter(secretCombo, col):
+        elif containsColour(secretCombo, colour):
             close+=1
     
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
-    return concatenateClues(on, close)
-    
+    return concatClues(on, close)
+
+def colourOutput(combo):
+    colouredWord=""
+    for i in combo:
+        if i=="r":
+            colouredWord+=f"{RED}r{RESET}"
+        elif i=="o":
+            colouredWord+=f"{ORANGE}o{RESET}"
+        elif i=="y":
+            colouredWord+=f"{YELLOW}y{RESET}"
+        elif i=="g":
+            colouredWord+=f"{GREEN}g{RESET}"
+        elif i=="b":
+            colouredWord+=f"{BLUE}b{RESET}"
+        else:
+            colouredWord+="w"
+    return colouredWord    
+
+def isColour(userGuess: str):
+    for i in userGuess:
+        if i not in "roygbw":
+            return False
+
+    return True
+
+def validIn(userGuess: str):
+    while True:
+        if isColour(userGuess) and len(userGuess)==4:
+            return userGuess
+            
+        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{RESET}w: "), lexer=mastermindLexer())
+
 def playRound(secretCombo: str):
     for i in range(10):
         guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer())
-        guess = valid(guess)
+        guess = validIn(guess)
 
         if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
             print("Congratulations! Your guess is correct!")
@@ -99,43 +118,12 @@ def playRound(secretCombo: str):
         else:
             print(getClues(secretCombo, guess))
     
-    print(f"You ran out of guesses. The answer was {makeColour(secretCombo)}. GAME OVER!!! Thanks for playing!")
-
-def makeColour(combo):
-    colouredWord=""
-    for i in combo:
-        if i=="r":
-            colouredWord+=f"{RED}r{RESET}"
-        elif i=="b":
-            colouredWord+=f"{BLUE}b{RESET}"
-        elif i=="g":
-            colouredWord+=f"{GREEN}g{RESET}"
-        elif i=="y":
-            colouredWord+=f"{YELLOW}y{RESET}"
-        elif i=="o":
-            colouredWord+=f"{ORANGE}o{RESET}"
-        else:
-            colouredWord+="w"
-    return colouredWord
+    print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!!! Thanks for playing!")
 
 def runGame():
-    secretCombo = generatesecretCombo()
+    secretCombo = genCombo()
     instructions()
     print(secretCombo)
     playRound(secretCombo)
-
-def isLetter(userGuess: str):
-    for i in userGuess:
-        if i not in "rbgyow":
-            return False
-
-    return True
-
-def valid(userGuess: str):
-    while True:
-        if isLetter(userGuess) and len(userGuess)==4:
-            return userGuess
-            
-        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{BLUE}b{GREEN}g{YELLOW}y{ORANGE}o{RESET}w: "), lexer=mastermindLexer())
 
 runGame()

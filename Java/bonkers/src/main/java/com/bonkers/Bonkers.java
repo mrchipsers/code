@@ -54,13 +54,14 @@ public class Bonkers {
     }
 
     public static String concatenateClues(int countAt, int countCLose){
-        String clue = "";
-        for (int i = 0; i<countAt; i++){
-            clue+="@ ";
-        }
-        for (int i = 0; i<countCLose; i++){
-            clue+="Close ";
-        }
+        //String clue = "";
+        //for (int i = 0; i<countAt; i++){
+        //    clue+="@ ";
+        // }
+        //for (int i = 0; i<countCLose; i++){
+        //    clue+="Close ";
+        //}
+        String clue = ("@ ".repeat(countAt))+("Close ".repeat(countCLose));
         return clue;
     }
 
