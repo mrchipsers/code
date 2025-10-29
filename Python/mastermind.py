@@ -1,79 +1,44 @@
 import random
 import colorama
-import pygame
-import os
+from prompt_toolkit import ANSI
+from prompt_toolkit.lexers import Lexer
+from prompt_toolkit.shortcuts import prompt
 
-PWHITE = (0, 0, 0)
+
 RED = colorama.Fore.RED
-PRED = (255, 0, 0)
 BLUE = colorama.Fore.BLUE
-PBLUE = (0, 0, 255)
 GREEN = colorama.Fore.GREEN
-PGREEN = (0, 255, 0)
 YELLOW = colorama.Fore.YELLOW
-PYELLOW = (255, 255, 0)
 BLACK = colorama.Fore.BLACK
-PBLACK = (0, 0 ,0)
 ORANGE = "\x1b[38;5;208m"
-PORANGE = (38, 5, 208)
 RESET = colorama.Style.RESET_ALL
 
+class mastermindLexer(Lexer):
 
-def pyGame():
-    pygame.init()
-    size = (1000, 1000)
-    screen = pygame.display.set_mode(size)
-    pygame.display.set_caption("Mastermind")
-    clock = pygame.time.Clock()
-    
-    run = True
-    while run:
-        clock.tick(100)
+    def lex_document(self, document):
+        mastermindCol = {
+            "r": "#e82d2d",  
+            "o": "#ff7f00",  
+            "y": "#cccc04",  
+            "g": "#47d347",  
+            "b": "#0095ff",  
+        }
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
+        def getLetter(lineno):
+            fragments = []
+            for c in document.lines[lineno]:
+                colour = mastermindCol.get(c.lower())
+                if colour:
+                    style_spec = f"fg:{colour}"
+                else:
+                    style_spec = ""
+                fragments.append((style_spec, c))
+            return fragments
+        return getLetter
 
-        screen.fill(PBLACK)
-        font = pygame.font.SysFont(pygame.font.get_default_font(), 36)
-        textStr1 = ("you will have 10 guesses to guess a 4 colour combination consisting of the colours "  )
-        textStr2 = (f"{PRED}red, {PBLUE}blue, {PGREEN}green, {PYELLOW}yellow, {PORANGE}orange, and white.")
-        text1 = font.render(textStr1, False, PWHITE)
-        text2 = font.render(textStr2, False, PWHITE)
-        screen.blit(text1, (0, 0))
-        screen.blit(text2, (0,25))
-
-        #pInstructions(screen)
-        drawCircles(size, screen)
-
-        pygame.display.flip()
-
-def drawCircles(screenSize: tuple, screen):
-    xSpacing = 55
-    ySpacing = 70
-    cols = 4  
-    rows = 10  
-    offset_x = (screenSize[0] - (cols - 1) * xSpacing) // 2
-    offset_y = (screenSize[1] - (rows - 1) * ySpacing) // 2
-    for i in range(cols):
-        for j in range(rows):
-            x = offset_x + i * xSpacing
-            y = offset_y + j * ySpacing +100
-            pygame.draw.circle(screen, PBLUE, (x, y), 20)
-
-def pInstructions(screen):
-    font = pygame.font.SysFont(pygame.font.get_default_font(), 36)
-    textStr = f"you will have 10 guesses to guess a 4 colour combination consisting of the colours red, blue, green, yellow, orange, and white."
-    for i in textStr:
-        
-        text1 = font.render(textStr, False, PWHITE)
-        screen.blit(text1, (0, 0))
 
 def instructions():
-    print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {BLUE}blue{RESET}, {GREEN}green{RESET}, {YELLOW}yellow{RESET}, {ORANGE}orange{RESET}, and white. 
-    to input the letters, input the first letters of each colour, with no repeats. 
-    Ex. for the input red, yellow, blue, green, you will input rybg. 
-    After each incorrect guess, you will be given clues categorized as follows:""")
+    print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {BLUE}blue{RESET}, {GREEN}green{RESET}, {YELLOW}yellow{RESET}, {ORANGE}orange{RESET}, and white. To input the letters, input the first letters of each colour, with no repeats. Ex. for the input red, yellow, blue, green, you will input {RED}r{YELLOW}y{BLUE}b{GREEN}g{RESET}. After each incorrect guess, you will be given clues categorized as follows:""")
     print("Clue:\t\tMeaning:")
     print(f"{BLACK}None{RESET}\t\tNone of the digits in your guess is correct.")
     print(f"Close\t\tOne digit is correct but in the wrong position.")
@@ -129,7 +94,7 @@ def getClues(secretCombo: str, userGuess: str):
     
 def playRound(secretCombo: str):
     for i in range(10):
-        guess = input(f"guess number {i+1}: ")
+        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer())
         guess = valid(guess)
 
         if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
@@ -174,13 +139,7 @@ def valid(userGuess: str):
     while True:
         if isLetter(userGuess) and len(userGuess)==4:
             return userGuess
-        
-        userGuess = input(f"guess a number that is 4 letters long and contains the letters {RED}r{BLUE}b{GREEN}g{YELLOW}y{ORANGE}o{RESET}w: ")
+            
+        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{BLUE}b{GREEN}g{YELLOW}y{ORANGE}o{RESET}w: "), lexer=mastermindLexer())
 
-def start():
-    if input("would you like to use a gui (Y/n): ")=="n":
-        runGame()
-    else:
-        pyGame()
-
-start()
+runGame()
