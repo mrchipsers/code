@@ -4,7 +4,8 @@ import java.util.Random;
 public class Bonkers {
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args){
-        runGame();
+        //runGame();
+        validInt(10);
     }
 
     public static void instructions(int numDigits, int maxGuesses){
@@ -91,8 +92,7 @@ public class Bonkers {
     public static void playRound(String secretNum, int maxGuesses){
         for (int i = 0; i<maxGuesses; i++){
             System.out.println("guess number "+(i+1));
-            String guess = ""+input.nextInt();
-            guess = valid(guess, secretNum.length());
+            String guess = valid(secretNum.length());
             if (getClues(secretNum, guess).equals("Congratulations! Your guess is correct!")){
                 System.out.println("Congratulations! Your guess is correct!");
                 return;
@@ -108,7 +108,7 @@ public class Bonkers {
         boolean goodLen = false;
         while (!goodLen){
             System.out.println("Enter the number of digits in the secret number (max of 10): "); 
-            numLength = input.nextInt(); 
+            numLength = validInt(10); 
             
             if (numLength<11 && numLength>0){
                 goodLen = true;
@@ -116,7 +116,7 @@ public class Bonkers {
         }
         
         System.out.println("Enter the number of guesses the player has: "); 
-        int maxGuesses = input.nextInt();
+        int maxGuesses = validInt(Integer.MAX_VALUE);
         String secretNum = generateSecretNum(numLength);
         instructions(numLength, maxGuesses);
         playRound(secretNum, maxGuesses);
@@ -131,13 +131,36 @@ public class Bonkers {
         return true;
     }
 
-    public static String valid(String userGuess, int numDigits){
-        while (true){
-            if (allDigits(userGuess) && userGuess.length()==numDigits){
-                return userGuess;
+    public static String valid( int numDigits){
+        String userIn = "";
+        while (true) {
+            try {
+                userIn = input.nextLine();
+                if (allDigits(userIn) && userIn.length()==numDigits){
+                    return userIn;
+                }
+                System.out.println("guess a number that is "+numDigits+" digits long: ");
+                userIn = input.nextLine();
+            } catch (Exception e) {
+                System.out.println("Please enter a "+numDigits+" long number. Try again.");
+                return valid(numDigits);
             }
-            System.out.println("guess a number that is "+numDigits+" digits long: ");
-            userGuess = input.nextLine();
+        }
+    }
+
+    public static int validInt( int max){
+        int userIn;
+        while (true){
+            try {
+                userIn = input.nextInt();
+                if (userIn<=max){
+                    return userIn;
+                }    
+                System.out.println("enter a number: ");
+            } catch (Exception e) {
+                System.out.println("Please enter a valid number. Try again.");
+                input.nextLine();
+            }    
         }
     }
 }
