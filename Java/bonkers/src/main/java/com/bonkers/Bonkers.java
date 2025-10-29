@@ -148,6 +148,16 @@ public class Bonkers {
         }
     }
 
+    public static String valid2(String userGuess, int numDigits){
+        while (true){
+            if(allDigits(userGuess) && userGuess.length()==numDigits){
+                return userGuess;
+            }
+            System.out.println("Guess a number that is " + numDigits + " digits long:");
+            userGuess = input.nextLine();
+        }
+    }
+
     public static int validInt( int max){
         int userIn;
         while (true){
