@@ -79,14 +79,10 @@ def getClues(secretCombo: str, userGuess: str):
         return "Congratulations! Your guess is correct!"
     
     for i, col in enumerate(userGuess):
-        if col in seen:
-            continue
         if secretCombo[i]==col:
             on+=1
-            seen.append(col)
         elif containsCharacter(secretCombo, col):
             close+=1
-            seen.append(col)
     
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
