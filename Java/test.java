@@ -1,19 +1,26 @@
+import java.util.Scanner;
 public class test{
-    static int timer_default = 500;
-    static int timer = timer_default;
     public static void main(String[] args){
-        System.out.println("this is a test for timers");
-        text("here I am modifying the wait time"); timer = 700;
-        text("now there is no wait time");
+        System.out.println(test());
     }
-    public static void text(String text){
-        System.out.println("start the clock for "+timer+" milliseconds");
+
+    public static int test(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("enter a 3 digit number: ");
+        int num;
         try {
-            Thread.sleep(timer);
-        } catch (InterruptedException e) {
-            System.out.println("thread interrupt");
+            while (true){
+                num = input.nextInt();
+                String numLen = ""+num;
+                if (numLen.length()==3){
+                    return num;
+                } 
+                System.out.println("the number is not 3 digits long. please try again: "); 
+            }
+            
+        } catch (Exception e) {
+            System.out.println("bad input. please try agin.");
+            return test();
         }
-        System.out.println("time is up");
-        timer = timer_default;
     }
 }
