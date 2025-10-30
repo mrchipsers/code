@@ -58,7 +58,7 @@ def genCombo():
     return scombo
 
 def concatClues(countAt: int, countClose: int):
-    return (f"{RED}Correct {RESET}"*countAt)+("close "*countClose)
+    return (f"{RED}Correct {RESET}"*countAt)+("Close "*countClose)
 
 def getClues(secretCombo: str, userGuess: str):
     close = 0
@@ -126,4 +126,6 @@ def runGame():
     print(secretCombo)
     playRound(secretCombo)
 
-runGame()
+if __name__ == '__main__':
+    #runGame()
+    print(concatClues(0, 0))
