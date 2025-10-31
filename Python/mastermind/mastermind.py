@@ -128,11 +128,11 @@ def saveLeader():
             f.write(f"{entry}\n")
 
 def printLeader():
-    print("pos.\t\tguesses, name")
+    print("posistion  guesses, name")
     for i, pos in enumerate(leaderboard):
         if i==10:
             break
-        print(f"{i+1}\t\t{pos}")
+        print(f"{i+1}          {pos}")
 
 def playRound(secretCombo: str):
     for i in range(10):
