@@ -3,6 +3,7 @@ import colorama
 from prompt_toolkit import ANSI
 from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
+import os
 
 RED = colorama.Fore.RED
 BLUE = colorama.Fore.BLUE
@@ -11,6 +12,12 @@ YELLOW = colorama.Fore.YELLOW
 BLACK = colorama.Fore.BLACK
 ORANGE = "\x1b[38;5;208m"
 RESET = colorama.Style.RESET_ALL
+
+#leaderboardPath='leaderboard.txt' #this is for normal computers
+leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
+
+with open(leaderboardPath, 'r') as f:
+   leaderboard = [line.replace('\n','') for line in f.readlines()]
 
 class mastermindLexer(Lexer):
 
@@ -21,6 +28,7 @@ class mastermindLexer(Lexer):
             "y": "#cccc04",  
             "g": "#47d347",  
             "b": "#0095ff",  
+            "w": "#ffffff"
         }
 
         def getLetter(lineno):
@@ -37,13 +45,13 @@ class mastermindLexer(Lexer):
 
 def instructions():
     print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {ORANGE}orange{RESET}, {YELLOW}yellow{RESET}, {GREEN}green{RESET}, {BLUE}blue{RESET}, and white. 
-To input the letters, input the first letters of each colour, with no repeats. 
+To input the letters, input the first letters of each colour, repeats are allowed. 
 Ex. for the input red, yellow, blue, green, you will input {RED}r{YELLOW}y{BLUE}b{GREEN}g{RESET}. 
 After each incorrect guess, you will be given clues categorized as follows:""")
     print("Clue:\t\tMeaning:")
     print(f"{BLACK}None{RESET}\t\tNone of the digits in your guess is correct.")
-    print(f"Close\t\tOne digit is correct but in the wrong position.")
-    print(f"{RED}Correct{RESET}\t\tOne digit is correct and in the right position.")
+    print(f"Close\t\tOne colour is correct but in the wrong position.")
+    print(f"{RED}Correct{RESET}\t\tOne colour is correct and in the correct position.")
 
 def containsColour(combo: str, colour: str):
     return colour in combo
@@ -107,6 +115,25 @@ def validIn(userGuess: str):
             
         userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{RESET}w: "), lexer=mastermindLexer())
 
+def sortLeader(entry):
+    for i, pos in enumerate(leaderboard):
+        if pos[0] > entry[0]:
+            leaderboard.insert(i, entry)
+            return
+    leaderboard.append(entry)
+
+def saveLeader():
+    with open(leaderboardPath, 'w') as f:
+        for entry in leaderboard:
+            f.write(f"{entry}\n")
+
+def printLeader():
+    print("pos.\t\tguesses, name")
+    for i, pos in enumerate(leaderboard):
+        if i==10:
+            break
+        print(f"{i+1}\t\t{pos}")
+
 def playRound(secretCombo: str):
     for i in range(10):
         guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer())
@@ -114,18 +141,33 @@ def playRound(secretCombo: str):
 
         if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
             print("Congratulations! Your guess is correct!")
-            return
+            return i+1
         else:
             print(getClues(secretCombo, guess))
     
     print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!!! Thanks for playing!")
+    return "DNF"
 
 def runGame():
     secretCombo = genCombo()
     instructions()
-    print(secretCombo)
-    playRound(secretCombo)
+    name = str(mastermindDebug(secretCombo))
+    guesses = str(playRound(secretCombo))
+    sortLeader(f"{guesses}, {name}")
+    saveLeader()
+    print("this is the top ten leaderboard: ")
+    printLeader()
+    
+
+def mastermindDebug(secretCombo):
+    name = input("enter your name: ")
+    if name.lower()=="admin" or name.lower()=="sofia":
+        print(colourOutput(secretCombo))
+        return name
+    else: 
+        print(f"Hi {name}, get ready to play!")
+        return name
 
 if __name__ == '__main__':
-    #runGame()
-    print(concatClues(0, 0))
+    runGame()
+    #print(os.getcwd())
