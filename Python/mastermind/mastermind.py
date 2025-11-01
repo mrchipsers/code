@@ -1,3 +1,4 @@
+from calendar import c
 import random
 import colorama
 from prompt_toolkit import ANSI
@@ -57,31 +58,49 @@ def containsColour(combo: str, colour: str):
     return colour in combo
 
 def genCombo():
+    comboDict = {
+    "r": [0, []],
+    "o": [0, []],
+    "y": [0, []],
+    "g": [0, []],
+    "b": [0, []],
+    "w": [0, []]
+    }
     options = ["r", "o", "y", "g", "b", "w"]
     combo = []
+   
     for i in range(4):    
         random.shuffle(options)
         combo.append(options[0])
+        comboDict[options[0]][0]+=1
+        comboDict[options[0]][1].append(i)
     scombo = "".join(combo)
-    return scombo
+
+    return [scombo,comboDict]
 
 def concatClues(countAt: int, countClose: int):
     return (f"{RED}Correct {RESET}"*countAt)+("Close "*countClose)
 
-def getClues(secretCombo: str, userGuess: str):
+def getClues(secretCombo: str, userGuess: str, comboDict):
+    comboDictCopy=comboDict.copy()
     close = 0
     on = 0
+   
     if secretCombo==userGuess:
         return "Congratulations! Your guess is correct!"
     
     for i, colour in enumerate(userGuess):
-        if secretCombo[i]==colour:
+        if comboDictCopy[colour][0]>0 and i in comboDictCopy[colour][1]:
             on+=1
-        elif containsColour(secretCombo, colour):
+            comboDictCopy[colour][0]-=1
+    
+    for i, colour in enumerate(userGuess):
+        if comboDictCopy[colour][0]>0:
             close+=1
     
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
+   
     return concatClues(on, close)
 
 def colourOutput(combo):
@@ -134,25 +153,26 @@ def printLeader():
             break
         print(f"{i+1}          {pos}")
 
-def playRound(secretCombo: str):
+def playRound(secretCombo: str, comboDict: dict):
     for i in range(10):
         guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer())
         guess = validIn(guess)
 
-        if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
+        if getClues(secretCombo, guess, comboDict)=="Congratulations! Your guess is correct!":
             print("Congratulations! Your guess is correct!")
             return i+1
         else:
-            print(getClues(secretCombo, guess))
+            print(getClues(secretCombo, guess, comboDict))
     
     print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!!! Thanks for playing!")
     return "DNF"
 
 def runGame():
-    secretCombo = genCombo()
+    combo = genCombo()
+    secretCombo, comboDict = combo[0], combo[1]
     instructions()
     name = str(mastermindDebug(secretCombo))
-    guesses = str(playRound(secretCombo))
+    guesses = str(playRound(secretCombo, comboDict))
     sortLeader(f"{guesses}, {name}")
     saveLeader()
     print("this is the top ten leaderboard: ")
@@ -170,4 +190,3 @@ def mastermindDebug(secretCombo):
 
 if __name__ == '__main__':
     runGame()
-    #print(os.getcwd())
