@@ -5,6 +5,7 @@ from prompt_toolkit import ANSI
 from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
 import os
+import copy
 
 RED = colorama.Fore.RED
 BLUE = colorama.Fore.BLUE
@@ -64,7 +65,8 @@ def genCombo():
     "y": [0, []],
     "g": [0, []],
     "b": [0, []],
-    "w": [0, []]
+    "w": [0, []],
+    "-": [0, []]
     }
     options = ["r", "o", "y", "g", "b", "w"]
     combo = []
@@ -82,19 +84,21 @@ def concatClues(countAt: int, countClose: int):
     return (f"{RED}Correct {RESET}"*countAt)+("Close "*countClose)
 
 def getClues(secretCombo: str, userGuess: str, comboDict):
-    comboDictCopy=comboDict.copy()
+    comboDictCopy=copy.deepcopy(comboDict)
     close = 0
     on = 0
-   
+    listGuess = list(userGuess)
+
     if secretCombo==userGuess:
         return "Congratulations! Your guess is correct!"
     
-    for i, colour in enumerate(userGuess):
+    for i, colour in enumerate(listGuess):
         if comboDictCopy[colour][0]>0 and i in comboDictCopy[colour][1]:
             on+=1
             comboDictCopy[colour][0]-=1
+            listGuess[i]="-"
     
-    for i, colour in enumerate(userGuess):
+    for i, colour in enumerate(listGuess):
         if comboDictCopy[colour][0]>0:
             close+=1
     
