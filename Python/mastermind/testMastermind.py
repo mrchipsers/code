@@ -10,19 +10,6 @@ BLACK = colorama.Fore.BLACK
 ORANGE = "\x1b[38;5;208m"
 RESET = colorama.Style.RESET_ALL
 
-leaderboard = [(2, "sofia"), (3, "Peyton"), (4, "Scarlett")]
-
-def sortLeader(entry):
-    for i, pos in enumerate(leaderboard):
-        if pos[0] > entry[0]:
-            leaderboard.insert(i, entry)
-            return leaderboard
-    leaderboard.append(entry)
-
-def printLeader():
-    for i in leaderboard:
-        print(i[0], i[1])
-
 class mastermindTest(unittest.TestCase):
     def testContainsColour(self):
         self.assertFalse(mastermind.containsColour("rgb", "w"))
@@ -52,11 +39,6 @@ class mastermindTest(unittest.TestCase):
     
     def testGenCombo(self):
         self.assertTrue(len(mastermind.genCombo()[0])==4)
-
-    
-    def testSortLeader(self):
-        self.assertEqual(sortLeader((3, "Jonah")), [(2, "sofia"), (3, "Peyton"), (3, "Jonah"),(4, "Scarlett")])
-        self.assertEqual(sortLeader((2, "Jonah")), [(2, "sofia"), (2, "Jonah"), (3, "Peyton"), (3, "Jonah"),(4, "Scarlett")])
 
 if __name__ == '__main__':
     unittest.main()

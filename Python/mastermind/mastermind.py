@@ -1,10 +1,8 @@
-from calendar import c
 import random
 import colorama
 from prompt_toolkit import ANSI
 from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
-import os
 import copy
 
 RED = colorama.Fore.RED
@@ -13,6 +11,7 @@ GREEN = colorama.Fore.GREEN
 YELLOW = colorama.Fore.YELLOW
 BLACK = colorama.Fore.BLACK
 ORANGE = "\x1b[38;5;208m"
+WHITE = colorama.Fore.WHITE
 RESET = colorama.Style.RESET_ALL
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
@@ -83,7 +82,7 @@ def genCombo():
 def concatClues(countAt: int, countClose: int):
     return (f"{RED}Correct {RESET}"*countAt)+("Close "*countClose)
 
-def getClues(secretCombo: str, userGuess: str, comboDict):
+def getClues(secretCombo: str, userGuess: str, comboDict: dict):
     comboDictCopy=copy.deepcopy(comboDict)
     close = 0
     on = 0
@@ -101,13 +100,14 @@ def getClues(secretCombo: str, userGuess: str, comboDict):
     for i, colour in enumerate(listGuess):
         if comboDictCopy[colour][0]>0:
             close+=1
+            comboDictCopy[colour][0]-=1
     
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
    
     return concatClues(on, close)
 
-def colourOutput(combo):
+def colourOutput(combo: str):
     colouredWord=""
     for i in combo:
         if i=="r":
@@ -121,7 +121,7 @@ def colourOutput(combo):
         elif i=="b":
             colouredWord+=f"{BLUE}b{RESET}"
         else:
-            colouredWord+="w"
+            colouredWord+=f"{WHITE}w{RESET}"
     return colouredWord    
 
 def isColour(userGuess: str):
@@ -136,7 +136,7 @@ def validIn(userGuess: str):
         if isColour(userGuess) and len(userGuess)==4:
             return userGuess
             
-        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{RESET}w: "), lexer=mastermindLexer())
+        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{RESET}w: "), lexer=mastermindLexer()).lower()
 
 def sortLeader(entry):
     for i, pos in enumerate(leaderboard):
@@ -159,7 +159,7 @@ def printLeader():
 
 def playRound(secretCombo: str, comboDict: dict):
     for i in range(10):
-        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer())
+        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer()).lower()
         guess = validIn(guess)
 
         if getClues(secretCombo, guess, comboDict)=="Congratulations! Your guess is correct!":
