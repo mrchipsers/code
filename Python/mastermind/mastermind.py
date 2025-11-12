@@ -18,7 +18,11 @@ RESET = colorama.Style.RESET_ALL
 leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
 
 with open(leaderboardPath, 'r') as f:
-   leaderboard = [line.replace('\n','') for line in f.readlines()]
+    leaderboard = []
+    for i, line in enumerate(f.readlines()):
+        line.replace('\n','')
+        line = line.split()
+        leaderboard.append(line)
 
 class mastermindLexer(Lexer):
 
@@ -148,14 +152,25 @@ def sortLeader(entry):
 def saveLeader():
     with open(leaderboardPath, 'w') as f:
         for entry in leaderboard:
-            f.write(f"{entry}\n")
+            guesses = entry[0]
+            name = entry[1]
+            f.write(f"{guesses} {name}\n")
 
 def printLeader():
-    print("posistion  guesses, name")
+    print("posistion  guesses  name")
     for i, pos in enumerate(leaderboard):
-        if i==10:
+        guesses = pos[0]
+        name = pos[1]
+        if i==9 and guesses=="DNF":
+            print(f"{i+1}         {guesses}      {name}")
             break
-        print(f"{i+1}          {pos}")
+        elif i==9:
+            print(f"{i+1}         {guesses}        {name}")
+            break
+        elif guesses=="DNF":
+            print(f"{i+1}          {guesses}      {name}")
+        else:
+            print(f"{i+1}          {guesses}        {name}")
 
 def playRound(secretCombo: str, comboDict: dict):
     for i in range(10):
@@ -177,7 +192,7 @@ def runGame():
     instructions()
     name = str(mastermindDebug(secretCombo))
     guesses = str(playRound(secretCombo, comboDict))
-    sortLeader(f"{guesses}, {name}")
+    sortLeader([guesses, name])
     saveLeader()
     print("this is the top ten leaderboard: ")
     printLeader()
