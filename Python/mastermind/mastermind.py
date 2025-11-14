@@ -5,14 +5,15 @@ from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
 import copy
 
-RED = colorama.Fore.RED
-BLUE = colorama.Fore.BLUE
-GREEN = colorama.Fore.GREEN
-YELLOW = colorama.Fore.YELLOW
-BLACK = colorama.Fore.BLACK
-ORANGE = "\x1b[38;5;208m"
-WHITE = colorama.Fore.WHITE
-RESET = colorama.Style.RESET_ALL
+RED = "\x1b[38;2;232;45;45m" #colorama.Fore.RED
+CORRECTRED = "\x1b[38;2;255;0;0m"
+ORANGE = "\x1b[38;2;255;127;0m"
+YELLOW = "\x1b[38;2;223;223;40m" #colorama.Fore.YELLOW
+GREEN = "\x1b[38;2;71;211;71m" #colorama.Fore.GREEN
+BLUE = "\x1b[38;2;0;149;255m" #colorama.Fore.BLUE
+WHITE = "\x1b[38;2;255;255;255m" #colorama.Fore.WHITE
+BLACK = "\x1b[38;2;0;0;0m" #colorama.Fore.BLACK
+RESET = "\x1b[0m" #colorama.Style.RESET_ALL
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
@@ -30,33 +31,33 @@ class mastermindLexer(Lexer):
         mastermindCol = {
             "r": "#e82d2d",  
             "o": "#ff7f00",  
-            "y": "#cccc04",  
+            "y": "#dfdf28",  
             "g": "#47d347",  
             "b": "#0095ff",  
             "w": "#ffffff"
         }
 
         def getLetter(lineno):
-            fragments = []
+            input = []
             for c in document.lines[lineno]:
                 colour = mastermindCol.get(c.lower())
                 if colour:
                     style_spec = f"fg:{colour}"
                 else:
                     style_spec = ""
-                fragments.append((style_spec, c))
-            return fragments
+                input.append((style_spec, c))
+            return input
         return getLetter
 
 def instructions():
-    print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {ORANGE}orange{RESET}, {YELLOW}yellow{RESET}, {GREEN}green{RESET}, {BLUE}blue{RESET}, and white. 
+    print(f"""you will have 10 guesses to guess a 4 colour combination consisting of the colours {RED}red{RESET}, {ORANGE}orange{RESET}, {YELLOW}yellow{RESET}, {GREEN}green{RESET}, {BLUE}blue{RESET}, and {WHITE}white{RESET}. 
 To input the letters, input the first letters of each colour, repeats are allowed. 
 Ex. for the input red, yellow, blue, green, you will input {RED}r{YELLOW}y{BLUE}b{GREEN}g{RESET}. 
 After each incorrect guess, you will be given clues categorized as follows:""")
     print("Clue:\t\tMeaning:")
     print(f"{BLACK}None{RESET}\t\tNone of the digits in your guess is correct.")
-    print(f"Close\t\tOne colour is correct but in the wrong position.")
-    print(f"{RED}Correct{RESET}\t\tOne colour is correct and in the correct position.")
+    print(f"{WHITE}Close{RESET}\t\tOne colour is correct but in the wrong position.")
+    print(f"{CORRECTRED}Correct{RESET}\t\tOne colour is correct and in the correct position.")
 
 def containsColour(combo: str, colour: str):
     return colour in combo
@@ -84,7 +85,7 @@ def genCombo():
     return [scombo,comboDict]
 
 def concatClues(countAt: int, countClose: int):
-    return (f"{RED}Correct {RESET}"*countAt)+("Close "*countClose)
+    return (f"{CORRECTRED}Correct {RESET}"*countAt)+(f"{WHITE}Close {RESET}"*countClose)
 
 def getClues(secretCombo: str, userGuess: str, comboDict: dict):
     comboDictCopy=copy.deepcopy(comboDict)
@@ -135,14 +136,14 @@ def isColour(userGuess: str):
 
     return True
 
-def validIn(userGuess: str):
+def validIn(userGuess):
     while True:
         if isColour(userGuess) and len(userGuess)==4:
             return userGuess
             
-        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{RESET}w: "), lexer=mastermindLexer()).lower()
+        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{WHITE}w{RESET}: "), lexer=mastermindLexer()).lower()
 
-def sortLeader(entry):
+def sortLeader(entry: list):
     for i, pos in enumerate(leaderboard):
         if pos[0] > entry[0]:
             leaderboard.insert(i, entry)
@@ -156,25 +157,18 @@ def saveLeader():
             name = entry[1]
             f.write(f"{guesses} {name}\n")
 
-def printLeader():
-    print("posistion  guesses  name")
+def printLeader(max: int):
+    print("posistion  guesses    name")
     for i, pos in enumerate(leaderboard):
         guesses = pos[0]
         name = pos[1]
-        if i==9 and guesses=="DNF":
-            print(f"{i+1}         {guesses}      {name}")
+        if i==max:
             break
-        elif i==9:
-            print(f"{i+1}         {guesses}        {name}")
-            break
-        elif guesses=="DNF":
-            print(f"{i+1}          {guesses}      {name}")
-        else:
-            print(f"{i+1}          {guesses}        {name}")
+        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
 
 def playRound(secretCombo: str, comboDict: dict):
     for i in range(10):
-        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer()).lower()
+        guess = prompt(ANSI(f"guess number {i+1}:"), lexer=mastermindLexer()).lower()
         guess = validIn(guess)
 
         if getClues(secretCombo, guess, comboDict)=="Congratulations! Your guess is correct!":
@@ -187,15 +181,21 @@ def playRound(secretCombo: str, comboDict: dict):
     return "DNF"
 
 def runGame():
-    combo = genCombo()
-    secretCombo, comboDict = combo[0], combo[1]
-    instructions()
-    name = str(mastermindDebug(secretCombo))
-    guesses = str(playRound(secretCombo, comboDict))
-    sortLeader([guesses, name])
-    saveLeader()
-    print("this is the top ten leaderboard: ")
-    printLeader()
+    run = True
+    while(run):  
+        combo = genCombo()
+        secretCombo, comboDict = combo[0], combo[1]
+        instructions()
+        name = str(mastermindDebug(secretCombo))
+        guesses = str(playRound(secretCombo, comboDict))
+        sortLeader([guesses, name])
+        saveLeader()
+        print("this is the top ten leaderboard: ")
+        printLeader(10)
+        if input("would you like the full leaderboard? (y/N)").lower()=="y":
+            printLeader(1000000)
+        if input("would you like to play again? (y/N)").lower()!="y":
+            run = False
     
 
 def mastermindDebug(secretCombo):
