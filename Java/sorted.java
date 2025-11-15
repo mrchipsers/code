@@ -24,12 +24,11 @@ public class sorted{
 
     public static int[] sorter(int[] list){
         for ( int i = 0; i<numlist; i++) {
-            for (int d = i; d<numlist; d++){
-                if (list[d]<list[i]) {
-                    int smallestIndex = d;
+            for (int j = i; d<numlist; d++){
+                if (list[j]<list[i]) {
                     int temp = list[i];
-                    list[i] = list[smallestIndex];
-                    list[smallestIndex] = temp;  
+                    list[i] = list[j];
+                    list[j] = temp;  
                 }
             }
             
