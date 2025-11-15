@@ -85,7 +85,7 @@ def genCombo():
     return [scombo,comboDict]
 
 def concatClues(countAt: int, countClose: int):
-    return (f"{CORRECTRED}Correct {RESET}"*countAt)+(f"{WHITE}Close {RESET}"*countClose)
+    return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
 
 def getClues(secretCombo: str, userGuess: str, comboDict: dict):
     comboDictCopy=copy.deepcopy(comboDict)
