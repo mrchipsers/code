@@ -15,6 +15,16 @@ WHITE = "\x1b[38;2;255;255;255m" #colorama.Fore.WHITE
 BLACK = "\x1b[38;2;0;0;0m" #colorama.Fore.BLACK
 RESET = "\x1b[0m" #colorama.Style.RESET_ALL
 
+comboDict = {
+    "r": [0, []],
+    "o": [0, []],
+    "y": [0, []],
+    "g": [0, []],
+    "b": [0, []],
+    "w": [0, []],
+    "-": [0, []]
+    }
+
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
 
@@ -63,15 +73,6 @@ def containsColour(combo: str, colour: str):
     return colour in combo
 
 def genCombo():
-    comboDict = {
-    "r": [0, []],
-    "o": [0, []],
-    "y": [0, []],
-    "g": [0, []],
-    "b": [0, []],
-    "w": [0, []],
-    "-": [0, []]
-    }
     options = ["r", "o", "y", "g", "b", "w"]
     combo = []
    
@@ -82,13 +83,13 @@ def genCombo():
         comboDict[options[0]][1].append(i)
     scombo = "".join(combo)
 
-    return [scombo,comboDict]
+    return scombo
 
 def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
 
-def getClues(secretCombo: str, userGuess: str, comboDict: dict):
-    comboDictCopy=copy.deepcopy(comboDict)
+def getClues(secretCombo: str, userGuess: str, combo=comboDict):
+    comboDictCopy=copy.deepcopy(combo)
     close = 0
     on = 0
     listGuess = list(userGuess)
@@ -166,7 +167,7 @@ def printLeader(max: int):
             break
         print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
 
-def playRound(secretCombo: str, comboDict: dict):
+def playRound(secretCombo: str):
     for i in range(10):
         guess = prompt(ANSI(f"guess number {i+1}:"), lexer=mastermindLexer()).lower()
         guess = validIn(guess)
@@ -183,11 +184,10 @@ def playRound(secretCombo: str, comboDict: dict):
 def runGame():
     run = True
     while(run):  
-        combo = genCombo()
-        secretCombo, comboDict = combo[0], combo[1]
+        secretCombo = genCombo()
         instructions()
         name = str(mastermindDebug(secretCombo))
-        guesses = str(playRound(secretCombo, comboDict))
+        guesses = str(playRound(secretCombo))
         sortLeader([guesses, name])
         saveLeader()
         print("this is the top ten leaderboard: ")
@@ -200,7 +200,7 @@ def runGame():
 
 def mastermindDebug(secretCombo):
     name = input("enter your name: ")
-    if name.lower()=="admin" or name.lower()=="sofia":
+    if name.lower() in ["admin", "sofia"]:
         print(colourOutput(secretCombo))
         return name
     else: 
