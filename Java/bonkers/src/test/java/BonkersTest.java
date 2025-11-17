@@ -45,6 +45,7 @@ public class BonkersTest {
     public void testNoRepeats(){
         assertTrue(noRepeats("1234"));
         assertFalse(noRepeats("12234"));
+        assertFalse(noRepeats("21234"));
     }
     @Test
     public void testGenerateSecretNum2(){
