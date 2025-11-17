@@ -5,25 +5,25 @@ from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
 import copy
 
-RED = "\x1b[38;2;232;45;45m" #colorama.Fore.RED
+#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will justnot work
+
+RED = "\x1b[38;2;232;45;45m" 
+#RED = colorama.Fore.RED
 CORRECTRED = "\x1b[38;2;255;0;0m"
 ORANGE = "\x1b[38;2;255;127;0m"
-YELLOW = "\x1b[38;2;223;223;40m" #colorama.Fore.YELLOW
-GREEN = "\x1b[38;2;71;211;71m" #colorama.Fore.GREEN
-BLUE = "\x1b[38;2;0;149;255m" #colorama.Fore.BLUE
-WHITE = "\x1b[38;2;255;255;255m" #colorama.Fore.WHITE
-BLACK = "\x1b[38;2;0;0;0m" #colorama.Fore.BLACK
-RESET = "\x1b[0m" #colorama.Style.RESET_ALL
+YELLOW = "\x1b[38;2;223;223;40m" 
+#YELLOW = colorama.Fore.YELLOW
+GREEN = "\x1b[38;2;71;211;71m" 
+#GREEN = colorama.Fore.GREEN
+BLUE = "\x1b[38;2;0;149;255m" 
+#BLUE = colorama.Fore.BLUE
+WHITE = "\x1b[38;2;255;255;255m" 
+#WHITE = colorama.Fore.WHITE
+BLACK = "\x1b[38;2;0;0;0m" 
+#BLACK = colorama.Fore.BLACK
+RESET = "\x1b[0m" 
+#RESET = colorama.Style.RESET_ALL
 
-comboDict = {
-    "r": [0, []],
-    "o": [0, []],
-    "y": [0, []],
-    "g": [0, []],
-    "b": [0, []],
-    "w": [0, []],
-    "-": [0, []]
-    }
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
@@ -79,35 +79,33 @@ def genCombo():
     for i in range(4):    
         random.shuffle(options)
         combo.append(options[0])
-        comboDict[options[0]][0]+=1
-        comboDict[options[0]][1].append(i)
+    
     scombo = "".join(combo)
-
     return scombo
 
 def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
 
-def getClues(secretCombo: str, userGuess: str, combo=comboDict):
-    comboDictCopy=copy.deepcopy(combo)
+def getClues(secretCombo: str, userGuess: str):
     close = 0
     on = 0
     listGuess = list(userGuess)
+    listAns = list(secretCombo)
 
     if secretCombo==userGuess:
         return "Congratulations! Your guess is correct!"
     
-    for i, colour in enumerate(listGuess):
-        if comboDictCopy[colour][0]>0 and i in comboDictCopy[colour][1]:
+    for i, col in enumerate(listGuess):
+        if col==listAns[i]:
+            listAns[i]="-"
+            listGuess[i]="_"
             on+=1
-            comboDictCopy[colour][0]-=1
-            listGuess[i]="-"
     
-    for i, colour in enumerate(listGuess):
-        if comboDictCopy[colour][0]>0:
+    for i, col in enumerate(listGuess):
+        if col in listAns:
+            listGuess[i]="_"
             close+=1
-            comboDictCopy[colour][0]-=1
-    
+
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
    
@@ -134,7 +132,6 @@ def isColour(userGuess: str):
     for i in userGuess:
         if i not in "roygbw":
             return False
-
     return True
 
 def validIn(userGuess):
@@ -172,11 +169,11 @@ def playRound(secretCombo: str):
         guess = prompt(ANSI(f"guess number {i+1}:"), lexer=mastermindLexer()).lower()
         guess = validIn(guess)
 
-        if getClues(secretCombo, guess, comboDict)=="Congratulations! Your guess is correct!":
+        if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
             print("Congratulations! Your guess is correct!")
             return i+1
         else:
-            print(getClues(secretCombo, guess, comboDict))
+            print(getClues(secretCombo, guess))
     
     print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!!! Thanks for playing!")
     return "DNF"
