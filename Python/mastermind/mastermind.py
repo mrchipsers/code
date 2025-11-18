@@ -35,6 +35,22 @@ with open(leaderboardPath, 'r') as f:
         line = line.split()
         leaderboard.append(line)
 
+def sortLeader(entry: list):
+    for i, pos in enumerate(leaderboard):
+        if pos[0] > entry[0]:
+            leaderboard.insert(i, entry)
+            return
+    leaderboard.append(entry)
+
+def printLeader(max: int):
+    print("posistion  guesses    name")
+    for i, pos in enumerate(leaderboard):
+        guesses = pos[0]
+        name = pos[1]
+        if i==max:
+            break
+        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
+
 class mastermindLexer(Lexer):
 
     def lex_document(self, document):
@@ -68,9 +84,6 @@ After each incorrect guess, you will be given clues categorized as follows:""")
     print(f"{BLACK}None{RESET}\t\tNone of the digits in your guess is correct.")
     print(f"{WHITE}Close{RESET}\t\tOne colour is correct but in the wrong position.")
     print(f"{CORRECTRED}Correct{RESET}\t\tOne colour is correct and in the correct position.")
-
-def containsColour(combo: str, colour: str):
-    return colour in combo
 
 def genCombo():
     options = ["r", "o", "y", "g", "b", "w"]
@@ -115,18 +128,18 @@ def colourOutput(combo: str):
     colouredWord=""
     for i in combo:
         if i=="r":
-            colouredWord+=f"{RED}r{RESET}"
+            colouredWord+=f"{RED}r"
         elif i=="o":
-            colouredWord+=f"{ORANGE}o{RESET}"
+            colouredWord+=f"{ORANGE}o"
         elif i=="y":
-            colouredWord+=f"{YELLOW}y{RESET}"
+            colouredWord+=f"{YELLOW}y"
         elif i=="g":
-            colouredWord+=f"{GREEN}g{RESET}"
+            colouredWord+=f"{GREEN}g"
         elif i=="b":
-            colouredWord+=f"{BLUE}b{RESET}"
+            colouredWord+=f"{BLUE}b"
         else:
-            colouredWord+=f"{WHITE}w{RESET}"
-    return colouredWord    
+            colouredWord+=f"{WHITE}w"
+    return colouredWord+f"{RESET}"    
 
 def isColour(userGuess: str):
     for i in userGuess:
@@ -136,33 +149,10 @@ def isColour(userGuess: str):
 
 def validIn(userGuess):
     while True:
-        if isColour(userGuess) and len(userGuess)==4:
+        if len(userGuess)==4 and isColour(userGuess):
             return userGuess
             
         userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{WHITE}w{RESET}: "), lexer=mastermindLexer()).lower()
-
-def sortLeader(entry: list):
-    for i, pos in enumerate(leaderboard):
-        if pos[0] > entry[0]:
-            leaderboard.insert(i, entry)
-            return
-    leaderboard.append(entry)
-
-def saveLeader():
-    with open(leaderboardPath, 'w') as f:
-        for entry in leaderboard:
-            guesses = entry[0]
-            name = entry[1]
-            f.write(f"{guesses} {name}\n")
-
-def printLeader(max: int):
-    print("posistion  guesses    name")
-    for i, pos in enumerate(leaderboard):
-        guesses = pos[0]
-        name = pos[1]
-        if i==max:
-            break
-        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
 
 def playRound(secretCombo: str):
     for i in range(10):
@@ -186,7 +176,6 @@ def runGame():
         name = mastermindDebug(secretCombo)
         guesses = str(playRound(secretCombo))
         sortLeader([guesses, name])
-        saveLeader()
         print("this is the top ten leaderboard: ")
         printLeader(10)
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
@@ -194,15 +183,20 @@ def runGame():
         if input("would you like to play again? (y/N)").lower()!="y":
             run = False
     
-
 def mastermindDebug(secretCombo):
     name = input("enter your name: ")
-    if name.lower() in ["admin", "sofia"]:
+    if name.lower() in ["admin"]:
         print(colourOutput(secretCombo))
-        return name
-    else: 
         print(f"Hi {name}, get ready to play!")
         return name
+    print(f"Hi {name}, get ready to play!")
+    return name
+
+with open(leaderboardPath, 'w') as f:    
+    for entry in leaderboard:
+        guesses = entry[0]
+        name = entry[1]
+        f.write(f"{guesses} {name}\n")
 
 if __name__ == '__main__':
     runGame()
