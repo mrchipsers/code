@@ -183,7 +183,7 @@ def runGame():
     while(run):  
         secretCombo = genCombo()
         instructions()
-        name = str(mastermindDebug(secretCombo))
+        name = mastermindDebug(secretCombo)
         guesses = str(playRound(secretCombo))
         sortLeader([guesses, name])
         saveLeader()
