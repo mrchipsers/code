@@ -5,7 +5,7 @@ from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
 import copy
 
-#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will justnot work
+#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will not work
 
 RED = "\x1b[38;2;232;45;45m" 
 #RED = colorama.Fore.RED
@@ -104,7 +104,7 @@ def genCombo():
         comboDict[options[0]][0]+=1
         comboDict[options[0]][1].append(i)
     scombo = "".join(combo)
-    return scombo
+    return [scombo, comboDict]
 
 def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
@@ -180,7 +180,7 @@ def playRound(secretCombo: str):
 def runGame():
     run = True
     while(run):  
-        secretCombo = genCombo()
+        secretCombo = genCombo()[0]
         instructions()
         name = mastermindDebug(secretCombo)
         guesses = str(playRound(secretCombo))
@@ -208,4 +208,6 @@ with open(leaderboardPath, 'w') as f:
         f.write(f"{guesses} {name}\n")
 
 if __name__ == '__main__':
-    runGame()
+    #runGame()
+    print(genCombo())
+    print(comboDict)

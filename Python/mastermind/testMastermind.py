@@ -2,7 +2,7 @@ import mastermind
 import colorama
 import unittest
 
-#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will justnot work
+#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will not work
 
 RED = "\x1b[38;2;232;45;45m" 
 #RED = colorama.Fore.RED
@@ -20,6 +20,12 @@ BLACK = "\x1b[38;2;0;0;0m"
 #BLACK = colorama.Fore.BLACK
 RESET = "\x1b[0m" 
 #RESET = colorama.Style.RESET_ALL
+
+def genComboChecker(combo: str, comboDict: dict):
+    for i, col in enumerate(combo):
+        if i not in comboDict[col][1]:
+            return False
+    return True
 
 class mastermindTest(unittest.TestCase):
     def testConcatClues(self):
@@ -39,14 +45,20 @@ class mastermindTest(unittest.TestCase):
         self.assertEqual(mastermind.getClues("brwr", "rooo", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}{WHITE}Close {RESET}")  
         self.assertEqual(mastermind.getClues("brwr", "oroo", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}Correct {WHITE}{RESET}")    
         self.assertEqual(mastermind.getClues("oygg", "rgrg", {"r": [0, []], "o": [1, [0]], "y": [1, [1]], "g": [2, [2, 3]], "b": [0, [0]], "w": [0, []], "-": [0, []]}), f"{CORRECTRED}Correct {WHITE}Close {RESET}")
+    
     def testIsColour(self):
         self.assertTrue(mastermind.isColour("rgbw"))
         self.assertFalse(mastermind.isColour("rtgb"))
         self.assertFalse(mastermind.isColour("@rgb"))
         self.assertTrue(mastermind.isColour(""))
     
+    def testGenComboChecker(self):
+        self.assertTrue(genComboChecker("rgbw", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}))
+        self. assertFalse(genComboChecker("rgbw", {"r": [2, [0, 1]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}))
+
     def testGenCombo(self):
-        self.assertTrue(len(mastermind.genCombo())==4)
+        combo,comboDict = mastermind.genCombo()
+        self.assertTrue(len(combo)==4 and genComboChecker(combo, comboDict))
 
     def testColourOutput(self):
         self.assertEqual(mastermind.colourOutput("royg"), f"{RED}r{ORANGE}o{YELLOW}y{GREEN}g{RESET}")
