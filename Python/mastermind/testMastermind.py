@@ -29,14 +29,16 @@ class mastermindTest(unittest.TestCase):
         self.assertEqual(mastermind.concatClues(0, 0), f"{CORRECTRED}{WHITE}{RESET}") 
 
     def testGetClues(self):
-        self.assertEqual(mastermind.getClues("rgbw", "yoyo"), f"{BLACK}None{RESET}") 
-        self.assertEqual(mastermind.getClues("rgbw", "rgbw"), "Congratulations! Your guess is correct!")
-        self.assertEqual(mastermind.getClues("rgbw", "rgwb"), f"{CORRECTRED}Correct Correct {WHITE}Close Close {RESET}")
-        self.assertEqual(mastermind.getClues("rrbw", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
-        self.assertEqual(mastermind.getClues("bwrr", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
-        self.assertEqual(mastermind.getClues("brwr", "rooo"), f"{CORRECTRED}{WHITE}Close {RESET}")  
-        self.assertEqual(mastermind.getClues("brwr", "oroo"), f"{CORRECTRED}Correct {WHITE}{RESET}")  
-    
+        self.assertEqual(mastermind.getClues("rgbw", "yoyo", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), f"{BLACK}None{RESET}") 
+        self.assertEqual(mastermind.getClues("rgbw", "rgbw", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), "Congratulations! Your guess is correct!")
+        self.assertEqual(mastermind.getClues("rgbw", "rgwb", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}Close Close {RESET}")
+        self.assertEqual(mastermind.getClues("rrbw", "rrrr", {"r": [2, [0, 1]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
+        self.assertEqual(mastermind.getClues("bwrr", "rrrr", {"r": [2, [2, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [1]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
+        self.assertEqual(mastermind.getClues("rbwr", "rrrr", {"r": [2, [0, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [1]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
+        self.assertEqual(mastermind.getClues("brwr", "rrrr", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
+        self.assertEqual(mastermind.getClues("brwr", "rooo", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}{WHITE}Close {RESET}")  
+        self.assertEqual(mastermind.getClues("brwr", "oroo", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}Correct {WHITE}{RESET}")    
+        self.assertEqual(mastermind.getClues("oygg", "rgrg", {"r": [0, []], "o": [1, [0]], "y": [1, [1]], "g": [2, [2, 3]], "b": [0, [0]], "w": [0, []], "-": [0, []]}), f"{CORRECTRED}Correct {WHITE}Close {RESET}")
     def testIsColour(self):
         self.assertTrue(mastermind.isColour("rgbw"))
         self.assertFalse(mastermind.isColour("rtgb"))

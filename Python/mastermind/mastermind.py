@@ -24,6 +24,15 @@ BLACK = "\x1b[38;2;0;0;0m"
 RESET = "\x1b[0m" 
 #RESET = colorama.Style.RESET_ALL
 
+comboDict = {
+    "r": [0, []],
+    "o": [0, []],
+    "y": [0, []],
+    "g": [0, []],
+    "b": [0, []],
+    "w": [0, []],
+    "-": [0, []]
+    }
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
@@ -92,38 +101,38 @@ def genCombo():
     for i in range(4):    
         random.shuffle(options)
         combo.append(options[0])
-    
+        comboDict[options[0]][0]+=1
+        comboDict[options[0]][1].append(i)
     scombo = "".join(combo)
     return scombo
 
 def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
 
-def getClues(secretCombo: str, userGuess: str):
+def getClues(secretCombo: str, userGuess: str, combo=comboDict):
+    comboDictCopy=copy.deepcopy(combo)
     close = 0
     on = 0
     listGuess = list(userGuess)
-    listAns = list(secretCombo)
 
     if secretCombo==userGuess:
         return "Congratulations! Your guess is correct!"
     
-    for i, col in enumerate(listGuess):
-        if col==listAns[i]:
-            listAns[i]="-"
-            listGuess[i]="_"
+    for i, colour in enumerate(listGuess):
+        if comboDictCopy[colour][0]>0 and i in comboDictCopy[colour][1]:
             on+=1
+            comboDictCopy[colour][0]-=1
+            listGuess[i]="-"
     
-    for i, col in enumerate(listGuess):
-        if col in listAns:
-            listGuess[i]="_"
+    for colour in listGuess:
+        if comboDictCopy[colour][0]>0:
             close+=1
-
+            comboDictCopy[colour][0]-=1
+    
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
    
     return concatClues(on, close)
-
 def colourOutput(combo: str):
     colouredWord=""
     for i in combo:
@@ -152,7 +161,7 @@ def validIn(userGuess):
         if len(userGuess)==4 and isColour(userGuess):
             return userGuess
             
-        userGuess = prompt(ANSI(f"guess a number that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{WHITE}w{RESET}: "), lexer=mastermindLexer()).lower()
+        userGuess = prompt(ANSI(f"guess a combination that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{WHITE}w{RESET}: "), lexer=mastermindLexer()).lower()
 
 def playRound(secretCombo: str):
     for i in range(10):
