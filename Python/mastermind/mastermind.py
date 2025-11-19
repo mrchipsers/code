@@ -208,6 +208,5 @@ with open(leaderboardPath, 'w') as f:
         f.write(f"{guesses} {name}\n")
 
 if __name__ == '__main__':
-    #runGame()
-    print(genCombo())
-    print(comboDict)
+    runGame()
+    
