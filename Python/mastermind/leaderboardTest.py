@@ -20,20 +20,13 @@ with open(leaderboardPath, 'r') as f:
 
 def sortLeader(entry: list):
     for i, pos in enumerate(leaderboard):
-        if pos[0] > entry[0]:
+        if int(pos[0]) > int(entry[0]):
             leaderboard.insert(i, entry)
             return
     leaderboard.append(entry)
 
-def saveLeader():
-    with open(leaderboardPath, 'w') as f:
-        for entry in leaderboard:
-            guesses = entry[0]
-            name = entry[1]
-            f.write(f"{guesses} {name}\n")
-
 def printLeader(max: int):
-    print("posistion  guesses    name")
+    print("posistion   guesses    name")
     for i, pos in enumerate(leaderboard):
         guesses = pos[0]
         name = pos[1]
@@ -45,5 +38,5 @@ def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}{RESET}")+(f"{WHITE}{"Close "*countClose}{RESET}")
 
 
-#printLeader(10)
-print(concatClues(2,0))
+printLeader(200)
+#print(concatClues(2,0))

@@ -21,12 +21,6 @@ BLACK = "\x1b[38;2;0;0;0m"
 RESET = "\x1b[0m" 
 #RESET = colorama.Style.RESET_ALL
 
-def genComboChecker(combo: str, comboDict: dict):
-    for i, col in enumerate(combo):
-        if i not in comboDict[col][1]:
-            return False
-    return True
-
 class mastermindTest(unittest.TestCase):
     def testConcatClues(self):
         self.assertEqual(mastermind.concatClues(2, 3), f"{CORRECTRED}Correct Correct {WHITE}Close Close Close {RESET}") 
@@ -34,15 +28,15 @@ class mastermindTest(unittest.TestCase):
         self.assertEqual(mastermind.concatClues(2, 0), f"{CORRECTRED}Correct Correct {WHITE}{RESET}") 
         self.assertEqual(mastermind.concatClues(0, 0), f"{CORRECTRED}{WHITE}{RESET}") 
 
-    def testGetClues(self):
-        self.assertEqual(mastermind.getClues("rgbw", "yoyo", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), f"{BLACK}None{RESET}") 
-        self.assertEqual(mastermind.getClues("rgbw", "rgbw", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), "Congratulations! Your guess is correct!")
-        self.assertEqual(mastermind.getClues("rgbw", "rgwb", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}Close Close {RESET}")
-        self.assertEqual(mastermind.getClues("rrbw", "rrrr", {"r": [2, [0, 1]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
-        self.assertEqual(mastermind.getClues("bwrr", "rrrr", {"r": [2, [2, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [1]], "-": [0, []]}), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
-        self.assertEqual(mastermind.getClues("brwr", "rooo", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}{WHITE}Close {RESET}")  
-        self.assertEqual(mastermind.getClues("brwr", "oroo", {"r": [2, [1, 3]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [0]], "w": [1, [2]], "-": [0, []]}), f"{CORRECTRED}Correct {WHITE}{RESET}")    
-        self.assertEqual(mastermind.getClues("oygg", "rgrg", {"r": [0, []], "o": [1, [0]], "y": [1, [1]], "g": [2, [2, 3]], "b": [0, [0]], "w": [0, []], "-": [0, []]}), f"{CORRECTRED}Correct {WHITE}Close {RESET}")
+    def testgetClues(self):
+        self.assertEqual(mastermind.getClues("rgbw", "yoyo"), f"{BLACK}None{RESET}") 
+        self.assertEqual(mastermind.getClues("rgbw", "rgbw"), "Congratulations! Your guess is correct!")
+        self.assertEqual(mastermind.getClues("rgbw", "rgwb"), f"{CORRECTRED}Correct Correct {WHITE}Close Close {RESET}")
+        self.assertEqual(mastermind.getClues("rrbw", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
+        self.assertEqual(mastermind.getClues("bwrr", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
+        self.assertEqual(mastermind.getClues("brwr", "rooo"), f"{CORRECTRED}{WHITE}Close {RESET}")  
+        self.assertEqual(mastermind.getClues("brwr", "oroo"), f"{CORRECTRED}Correct {WHITE}{RESET}")    
+        self.assertEqual(mastermind.getClues("oygg", "rgrg"), f"{CORRECTRED}Correct {WHITE}Close {RESET}")
     
     def testIsColour(self):
         self.assertTrue(mastermind.isColour("rgbw"))
@@ -50,13 +44,9 @@ class mastermindTest(unittest.TestCase):
         self.assertFalse(mastermind.isColour("@rgb"))
         self.assertTrue(mastermind.isColour(""))
     
-    def testGenComboChecker(self):
-        self.assertTrue(genComboChecker("rgbw", {"r": [1, [0]], "o": [0, []], "y": [0, []], "g": [1, [1]], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}))
-        self. assertFalse(genComboChecker("rgbw", {"r": [2, [0, 1]], "o": [0, []], "y": [0, []], "g": [0, []], "b": [1, [2]], "w": [1, [3]], "-": [0, []]}))
-
     def testGenCombo(self):
-        combo,comboDict = mastermind.genCombo()
-        self.assertTrue(len(combo)==4 and genComboChecker(combo, comboDict))
+        self.assertTrue(len(mastermind.genCombo())==4)
+        
 
     def testColourOutput(self):
         self.assertEqual(mastermind.colourOutput("royg"), f"{RED}r{ORANGE}o{YELLOW}y{GREEN}g{RESET}")
