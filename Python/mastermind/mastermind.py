@@ -23,27 +23,23 @@ with open(leaderboardPath, 'r') as f:
         line = line.split()
         leaderboard.append(line)
 
-def sortLeader(entry: list):
+def sortLeader(new: list):
     for i, pos in enumerate(leaderboard):
-        if int(pos[0]) > int(entry[0]):
-            leaderboard.insert(i, entry)
+        if pos[0] > new[0]:
+            leaderboard.insert(i, [new[0]+1, new[1]])
             return
-    leaderboard.append(entry)
+    leaderboard.append(new)
     
     with open(leaderboardPath, 'w') as f:    
         for entry in leaderboard:
-            guesses = entry[0]
-            name = entry[1]
-            f.write(f"{guesses} {name}\n")
+            f.write(f"{entry[0]} {entry[1]}\n")
 
 def printLeader(max: int):
     print("posistion   guesses    name")
     for i, pos in enumerate(leaderboard):
-        guesses = pos[0]
-        name = pos[1]
         if i==max:
             break
-        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
+        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{pos[0]}{" "*(11-len(pos[0]))}{pos[1]}")
 
 class mastermindLexer(Lexer):
 
@@ -155,7 +151,7 @@ def playRound(secretCombo: str):
 
         if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
             print("Congratulations! Your guess is correct!")
-            return i+1
+            return i
         else:
             print(getClues(secretCombo, guess))
     
