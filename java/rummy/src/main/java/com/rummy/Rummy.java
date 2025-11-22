@@ -90,7 +90,7 @@ public class Rummy{
         }
     }
 
-    public static void sortHand(String[] hand){
+    public static String[] sortHand(String[] hand){
         boolean repeat=true;
         while (repeat){
             repeat=false;
@@ -108,25 +108,34 @@ public class Rummy{
                 }
             }
         }
+        return hand;
     }
 
     public static boolean isSet(String[] meld){
-        for (int i = 0; i<meld.length-2; i++){
-            if (cardNum(meld[i])==cardNum(meld[i+1]) && cardNum(meld[i+1])==cardNum(meld[i+2]) && cardSuit(meld[i])!=cardSuit(meld[i+1]) && cardSuit(meld[i+1])!=cardSuit(meld[i+2]) && cardSuit(meld[i+2])!=cardSuit(meld[i])){
-                return true;
-            }
-        }
-        for (int i = 0; i<meld.length-3; i++){
-            if (cardNum(meld[i])==cardNum(meld[i+1]) && cardNum(meld[i+1])==cardNum(meld[i+2]) && cardNum(meld[i+2])==cardNum(meld[i+3]) && cardSuit(meld[i])!=cardSuit(meld[i+1]) && cardSuit(meld[i+1])!=cardSuit(meld[i+2]) && cardSuit(meld[i+2])!=cardSuit(meld[i+3]) && cardSuit(meld[i+3])!=cardSuit(meld[i])){
-                return true;
+        for (int a = 0; a<meld.length; a++){
+            for (int b = 0; b<meld.length; b++){
+                for (int c = 0; c<meld.length; c++){
+                    if (cardNum(meld[a])==cardNum(meld[b]) && cardNum(meld[b])==cardNum(meld[c]) && cardSuit(meld[a])!=cardSuit(meld[b]) && cardSuit(meld[b])!=cardSuit(meld[c]) && cardSuit(meld[c])!=cardSuit(meld[a])){
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
-    //public static boolean isRun(String[] meld){
-
-    //}
+    public static boolean isRun(String[] meld){
+        for (int a = 0; a<meld.length; a++){
+            for (int b = 0; b<meld.length; b++){
+                for (int c = 0; c<meld.length; c++){
+                    if (cardNum(meld[a])==cardNum(meld[b])-1 && cardNum(meld[b])==cardNum(meld[c])-1 && cardSuit(meld[a])==cardSuit(meld[b]) && cardSuit(meld[b])==cardSuit(meld[c]) && cardSuit(meld[c])==cardSuit(meld[a])){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public static int index(String[] cardArray, String card){
         for (int i = 0; i<cardArray.length; i++){
