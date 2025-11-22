@@ -5,12 +5,12 @@ public class Rummy{
     public static void main(String[] args) {
         String[] deck = buildDeck();
         System.out.println(Arrays.toString(deck));
-        shuffleDeck(deck);
+        //shuffleDeck(deck);
         
-        String[] hand = dealHand(deck);
-        sortHand(hand);
+        //String[] hand = dealHand(deck);
+        //sortHand(hand);
         
-        print(hand);
+        //print(hand);
         //System.out.println((int)"123".charAt(0));
         //System.out.println((int)"123".charAt(1));
         //System.out.println((int)"123".charAt(2));
@@ -30,18 +30,12 @@ public class Rummy{
 
     public static String[] buildDeck(){
         String[] deck = new String[40];
-        
-        for (int i = 0; i<4; i++){
+        String[] suit = {"S", "H", "C", "D"};
+        int index = 0;
+        for (int i = 0; i<suit.length; i++){
             for (int j = 1; j<11; j++){
-                if (i==0){
-                    deck[j-1]=j+"S";
-                }else if (i==1){
-                    deck[9+j]=j+"D";
-                }else if (i==2){
-                    deck[19+j]=j+"H";
-                }else{
-                    deck[29+j]=j+"C";
-                }
+                deck[index]=j+suit[i];
+                index++;
             }
         }
         return deck;
@@ -114,6 +108,32 @@ public class Rummy{
                 }
             }
         }
+    }
 
+    public static boolean isSet(String[] meld){
+        for (int i = 0; i<meld.length-2; i++){
+            if (cardNum(meld[i])==cardNum(meld[i+1]) && cardNum(meld[i+1])==cardNum(meld[i+2]) && cardSuit(meld[i])!=cardSuit(meld[i+1]) && cardSuit(meld[i+1])!=cardSuit(meld[i+2]) && cardSuit(meld[i+2])!=cardSuit(meld[i])){
+                return true;
+            }
+        }
+        for (int i = 0; i<meld.length-3; i++){
+            if (cardNum(meld[i])==cardNum(meld[i+1]) && cardNum(meld[i+1])==cardNum(meld[i+2]) && cardNum(meld[i+2])==cardNum(meld[i+3]) && cardSuit(meld[i])!=cardSuit(meld[i+1]) && cardSuit(meld[i+1])!=cardSuit(meld[i+2]) && cardSuit(meld[i+2])!=cardSuit(meld[i+3]) && cardSuit(meld[i+3])!=cardSuit(meld[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //public static boolean isRun(String[] meld){
+
+    //}
+
+    public static int index(String[] cardArray, String card){
+        for (int i = 0; i<cardArray.length; i++){
+            if (cardArray[i].equals(card)){
+                return i;
+            }
+        }
+        return -1;
     }
 }
