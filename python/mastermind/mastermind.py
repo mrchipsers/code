@@ -26,7 +26,7 @@ with open(leaderboardPath, 'r') as f:
 def sortLeader(new: list):
     for i, pos in enumerate(leaderboard):
         if pos[0] > new[0]:
-            leaderboard.insert(i, [new[0]+1, new[1]])
+            leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
             return
     leaderboard.append(new)
     
