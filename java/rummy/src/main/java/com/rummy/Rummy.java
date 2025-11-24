@@ -114,8 +114,14 @@ public class Rummy{
     public static boolean isSet(String[] meld){
         for (int a = 0; a<meld.length; a++){
             for (int b = 0; b<meld.length; b++){
+                if (a==b){
+                    continue;
+                }
                 for (int c = 0; c<meld.length; c++){
-                    if (cardNum(meld[a])==cardNum(meld[b]) && cardNum(meld[b])==cardNum(meld[c]) && cardSuit(meld[a])!=cardSuit(meld[b]) && cardSuit(meld[b])!=cardSuit(meld[c]) && cardSuit(meld[c])!=cardSuit(meld[a])){
+                    if (c==b || c==a){
+                        continue;
+                    }
+                    if (cardNum(meld[a])==cardNum(meld[b]) && cardNum(meld[b])==cardNum(meld[c])){
                         return true;
                     }
                 }

@@ -14,7 +14,7 @@ BLACK = "\x1b[38;2;0;0;0m"
 RESET = "\x1b[0m" 
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
-leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
+leaderboardPath='python/mastermind/leaderboard.txt' #my computer is messed up
 
 with open(leaderboardPath, 'r') as f:
     leaderboard = []
