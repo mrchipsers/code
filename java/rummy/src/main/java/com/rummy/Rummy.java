@@ -155,6 +155,8 @@ public class Rummy{
     }
 
     public static String[] chooseMeld(String[] hand){
+        System.out.print("your hand: ");
+        print(hand);
         System.out.println("How many card will you play? ");
         int cards = input.nextInt();
         String[] meld = new String[cards];
@@ -186,4 +188,29 @@ public class Rummy{
         }
         return 0;
     }
+
+    public static int playMeld(String[] cardArray){
+        int score = 0;
+        while (true){
+            System.out.println("Do you have any cards to play? (Yes/no)");
+            String confirm = input.nextLine();
+            if (confirm.toLowerCase() != "yes"){
+                break;
+            }
+            String[] meld = chooseMeld(cardArray);
+            score = assessMeld(cardArray);
+        }
+        return score;
+    }
+
+    public static boolean playedAllCards(String[] cardArray){
+        for (int i = 0; i<cardArray.length; i++){
+            if (cardArray[i]!="0"){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    
 }

@@ -70,4 +70,28 @@ public class RummyTest {
         assertEquals(2, Rummy.index(hand, "4H"));
         assertEquals(-1, Rummy.index(hand, "1C"));
     }
+
+    @Test
+    public void testMeldScore(){
+        String[] hand = {"5H", "6H", "4H", "3H", "10S", "3D"};
+        assertEquals(31, Rummy.meldScore(hand));
+    }
+
+    @Test
+    public void testAssessMeld(){
+        String[] valid1 = {"5H", "6H", "4H", "3H", "10S", "3D"};
+        String[] valid2 = {"3S", "4S", "5S", "3H"};
+        String[] invalid = {"3S", "3C", "4H", "5H"};
+        assertEquals(31, Rummy.assessMeld(valid1));
+        assertEquals(15, Rummy.assessMeld(valid2));
+        assertEquals(0, Rummy.assessMeld(invalid));
+    }
+
+    @Test
+    public void testPlayedAllCards(){
+        String[] no = {"0", "0", "0", "3H", "10S", "3D"};
+        String[] yes = {"0", "0", "0", "0", "0", "0"};
+        assertFalse(Rummy.playedAllCards(no));
+        assertTrue(Rummy.playedAllCards(yes));
+    }
 }
