@@ -1,7 +1,9 @@
 package com.rummy;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 public class Rummy{
+    static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
         String[] deck = buildDeck();
         System.out.println(Arrays.toString(deck));
@@ -150,5 +152,38 @@ public class Rummy{
             }
         }
         return -1;
+    }
+
+    public static String[] chooseMeld(String[] hand){
+        System.out.println("How many card will you play? ");
+        int cards = input.nextInt();
+        String[] meld = new String[cards];
+        for (int i = 0; i<cards;){
+            System.out.println("play your card: ");
+            meld[i]=input.nextLine();
+            int index = index(hand, meld[i]);
+            if(index!=-1){
+                hand[index]="0";
+                i++;
+            }else{
+                System.out.println("please enter a valid card");
+            }
+        }
+        return meld;
+    }
+
+    public static int meldScore(String[] meld){
+        int sum = 0;
+        for (int i = 0; i<meld.length; i++){
+            sum+=cardNum(meld[i]);
+        }
+        return sum;
+    }
+
+    public static int assessMeld(String[] cardArray){
+        if (isRun(cardArray) || isSet(cardArray)){
+            return meldScore(cardArray);
+        }
+        return 0;
     }
 }
