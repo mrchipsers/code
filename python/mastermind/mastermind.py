@@ -14,12 +14,11 @@ BLACK = "\x1b[38;2;0;0;0m"
 RESET = "\x1b[0m" 
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
-leaderboardPath='python/mastermind/leaderboard.txt' #my computer is messed up
+leaderboardPath ='python/mastermind/leaderboard.txt' #my computer is messed up
 
 with open(leaderboardPath, 'r') as f:
     leaderboard = []
     for i, line in enumerate(f.readlines()):
-        line.replace('\n','')
         line = line.split()
         leaderboard.append(line)
 
@@ -30,6 +29,7 @@ def sortLeader(new: list):
             return
     leaderboard.append(new)
     
+def saveLeader():  
     with open(leaderboardPath, 'w') as f:    
         for entry in leaderboard:
             f.write(f"{entry[0]} {entry[1]}\n")
@@ -42,7 +42,6 @@ def printLeader(max: int):
         print(f"{i+1}{" "*(12-len(f"{i+1}"))}{pos[0]}{" "*(11-len(pos[0]))}{pos[1]}")
 
 class mastermindLexer(Lexer):
-
     def lex_document(self, document):
         mastermindCol = {
             "r": "#e82d2d",  
@@ -77,14 +76,7 @@ After each incorrect guess, you will be given clues categorized as follows:""")
 
 def genCombo():
     options = ["r", "o", "y", "g", "b", "w"]
-    combo = []
-   
-    for i in range(4):    
-        random.shuffle(options)
-        combo.append(options[0])
-
-    scombo = "".join(combo)
-    return scombo
+    return "".join(random.choices(options, k=4))
 
 def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
@@ -96,7 +88,7 @@ def getClues(secretCombo: str, userGuess: str):
     listAns = list(secretCombo)
 
     if secretCombo==userGuess:
-        return "Congratulations! Your guess is correct!"
+        return "win"
     
     for i, col in enumerate(listGuess):
         if col==listAns[i]:
@@ -129,7 +121,7 @@ def colourOutput(combo: str):
             colouredWord+=f"{BLUE}b"
         else:
             colouredWord+=f"{WHITE}w"
-    return colouredWord+f"{RESET}"    
+    return colouredWord+RESET   
 
 def isColour(userGuess: str):
     for i in userGuess:
@@ -146,21 +138,21 @@ def validIn(userGuess):
 
 def playRound(secretCombo: str):
     for i in range(10):
-        guess = prompt(ANSI(f"guess number {i+1}:"), lexer=mastermindLexer()).lower()
+        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer()).lower()
         guess = validIn(guess)
-
-        if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
+        clues = getClues(secretCombo, guess)
+        
+        if clues=="win":
             print("Congratulations! Your guess is correct!")
             return i
         else:
-            print(getClues(secretCombo, guess))
+            print(clues)
     
-    print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!!! Thanks for playing!")
+    print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!")
     return "DNF"
 
 def runGame():
-    run = True
-    while(run): 
+    while(True): 
         secretCombo = genCombo()
         instructions()
         name = mastermindDebug(secretCombo)
@@ -171,14 +163,14 @@ def runGame():
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
             printLeader(1000000)
         if input("would you like to play again? (y/N)").lower()!="y":
-            run = False 
+            break 
+    saveLeader()
+    print("Thanks for playing!")
     
 def mastermindDebug(secretCombo):
     name = input("enter your name: ")
     if name.lower() in ["admin"]:
         print(colourOutput(secretCombo))
-        print(f"Hi {name}, get ready to play!")
-        return name
     print(f"Hi {name}, get ready to play!")
     return name
 

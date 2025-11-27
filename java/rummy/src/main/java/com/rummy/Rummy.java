@@ -198,7 +198,7 @@ public class Rummy{
                 break;
             }
             String[] meld = chooseMeld(cardArray);
-            score = assessMeld(cardArray);
+            score = assessMeld(meld);
         }
         return score;
     }
@@ -212,5 +212,5 @@ public class Rummy{
         return true;
     }
 
-    
+
 }

@@ -9,34 +9,35 @@ BLACK = "\x1b[38;2;0;0;0m" #colorama.Fore.BLACK
 RESET = "\x1b[0m" #colorama.Style.RESET_ALL
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
-leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
+leaderboardPath='python/mastermind/leaderboard.txt' #my computer is messed up
 
 with open(leaderboardPath, 'r') as f:
     leaderboard = []
     for i, line in enumerate(f.readlines()):
-        line.replace('\n','')
         line = line.split()
         leaderboard.append(line)
-
-def sortLeader(entry: list):
+    
+def sortLeader(new: list):
     for i, pos in enumerate(leaderboard):
-        if int(pos[0]) > int(entry[0]):
-            leaderboard.insert(i, entry)
+        if pos[0] > new[0]:
+            leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
             return
-    leaderboard.append(entry)
+    leaderboard.append(new)
+
+def saveLeader():  
+    with open(leaderboardPath, 'w') as f:    
+        for entry in leaderboard:
+            f.write(f"{entry[0]} {entry[1]}\n")
 
 def printLeader(max: int):
     print("posistion   guesses    name")
     for i, pos in enumerate(leaderboard):
-        guesses = pos[0]
-        name = pos[1]
         if i==max:
             break
-        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
+        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{pos[0]}{" "*(11-len(pos[0]))}{pos[1]}")
 
-def concatClues(countAt: int, countClose: int):
-    return (f"{CORRECTRED}{"Correct "*countAt}{RESET}")+(f"{WHITE}{"Close "*countClose}{RESET}")
-
+sortLeader(["2", "sarah"])
 
 printLeader(200)
+saveLeader()
 #print(concatClues(2,0))

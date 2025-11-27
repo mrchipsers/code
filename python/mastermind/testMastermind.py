@@ -47,7 +47,6 @@ class mastermindTest(unittest.TestCase):
     def testGenCombo(self):
         self.assertTrue(len(mastermind.genCombo())==4)
         
-
     def testColourOutput(self):
         self.assertEqual(mastermind.colourOutput("royg"), f"{RED}r{ORANGE}o{YELLOW}y{GREEN}g{RESET}")
 
