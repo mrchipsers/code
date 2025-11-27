@@ -38,3 +38,22 @@ def decompress(string: str):
 		output+=f"{string[countCopy]*int(num)}"
 		count+=1
 	return output
+
+def validString(lst: list):
+	valid=[]
+	for string in lst:
+		if string.isalpha() or len(string)==0:
+			valid.append(string)
+	return valid
+
+def anti67(lst: list):
+	out=0
+	remove=False
+	for i in lst:
+		if i==7 and remove:
+			remove=False
+		elif i==6 or remove:
+			remove=True
+		else:
+			out+=i
+	return out
