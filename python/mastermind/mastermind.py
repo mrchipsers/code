@@ -1,67 +1,47 @@
 import random
-import colorama
 from prompt_toolkit import ANSI
 from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
-import copy
-
-#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will not work
 
 RED = "\x1b[38;2;232;45;45m" 
-#RED = colorama.Fore.RED
 CORRECTRED = "\x1b[38;2;255;0;0m"
 ORANGE = "\x1b[38;2;255;127;0m"
 YELLOW = "\x1b[38;2;223;223;40m" 
-#YELLOW = colorama.Fore.YELLOW
 GREEN = "\x1b[38;2;71;211;71m" 
-#GREEN = colorama.Fore.GREEN
 BLUE = "\x1b[38;2;0;149;255m" 
-#BLUE = colorama.Fore.BLUE
 WHITE = "\x1b[38;2;255;255;255m" 
-#WHITE = colorama.Fore.WHITE
 BLACK = "\x1b[38;2;0;0;0m" 
-#BLACK = colorama.Fore.BLACK
 RESET = "\x1b[0m" 
-#RESET = colorama.Style.RESET_ALL
-
-comboDict = {
-    "r": [0, []],
-    "o": [0, []],
-    "y": [0, []],
-    "g": [0, []],
-    "b": [0, []],
-    "w": [0, []],
-    "-": [0, []]
-    }
 
 #leaderboardPath='leaderboard.txt' #this is for normal computers
-leaderboardPath='Python/mastermind/leaderboard.txt' #my computer is messed up
+leaderboardPath ='python/mastermind/leaderboard.txt' #my computer is messed up
 
 with open(leaderboardPath, 'r') as f:
     leaderboard = []
     for i, line in enumerate(f.readlines()):
-        line.replace('\n','')
         line = line.split()
         leaderboard.append(line)
 
-def sortLeader(entry: list):
+def sortLeader(new: list):
     for i, pos in enumerate(leaderboard):
-        if pos[0] > entry[0]:
-            leaderboard.insert(i, entry)
+        if pos[0] > new[0]:
+            leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
             return
-    leaderboard.append(entry)
+    leaderboard.append(new)
+    
+def saveLeader():  
+    with open(leaderboardPath, 'w') as f:    
+        for entry in leaderboard:
+            f.write(f"{entry[0]} {entry[1]}\n")
 
 def printLeader(max: int):
-    print("posistion  guesses    name")
+    print("posistion   guesses    name")
     for i, pos in enumerate(leaderboard):
-        guesses = pos[0]
-        name = pos[1]
         if i==max:
             break
-        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{guesses}{" "*(11-len(guesses))}{name}")
+        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{pos[0]}{" "*(11-len(pos[0]))}{pos[1]}")
 
 class mastermindLexer(Lexer):
-
     def lex_document(self, document):
         mastermindCol = {
             "r": "#e82d2d",  
@@ -96,43 +76,36 @@ After each incorrect guess, you will be given clues categorized as follows:""")
 
 def genCombo():
     options = ["r", "o", "y", "g", "b", "w"]
-    combo = []
-   
-    for i in range(4):    
-        random.shuffle(options)
-        combo.append(options[0])
-        comboDict[options[0]][0]+=1
-        comboDict[options[0]][1].append(i)
-    scombo = "".join(combo)
-    return [scombo, comboDict]
+    return "".join(random.choices(options, k=4))
 
 def concatClues(countAt: int, countClose: int):
     return (f"{CORRECTRED}{"Correct "*countAt}")+(f"{WHITE}{"Close "*countClose}{RESET}")
 
-def getClues(secretCombo: str, userGuess: str, combo=comboDict):
-    comboDictCopy=copy.deepcopy(combo)
+def getClues(secretCombo: str, userGuess: str):
     close = 0
     on = 0
     listGuess = list(userGuess)
+    listAns = list(secretCombo)
 
     if secretCombo==userGuess:
-        return "Congratulations! Your guess is correct!"
+        return "win"
     
-    for i, colour in enumerate(listGuess):
-        if comboDictCopy[colour][0]>0 and i in comboDictCopy[colour][1]:
+    for i, col in enumerate(listGuess):
+        if col==listAns[i]:
+            listAns[i]="-"
+            listGuess[i]="_"
             on+=1
-            comboDictCopy[colour][0]-=1
-            listGuess[i]="-"
     
-    for colour in listGuess:
-        if comboDictCopy[colour][0]>0:
+    for i, col in enumerate(listGuess):
+        if col in listAns:
+            listGuess[i]="_"
             close+=1
-            comboDictCopy[colour][0]-=1
-    
+
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
    
     return concatClues(on, close)
+
 def colourOutput(combo: str):
     colouredWord=""
     for i in combo:
@@ -148,7 +121,7 @@ def colourOutput(combo: str):
             colouredWord+=f"{BLUE}b"
         else:
             colouredWord+=f"{WHITE}w"
-    return colouredWord+f"{RESET}"    
+    return colouredWord+RESET   
 
 def isColour(userGuess: str):
     for i in userGuess:
@@ -165,22 +138,22 @@ def validIn(userGuess):
 
 def playRound(secretCombo: str):
     for i in range(10):
-        guess = prompt(ANSI(f"guess number {i+1}:"), lexer=mastermindLexer()).lower()
+        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer()).lower()
         guess = validIn(guess)
-
-        if getClues(secretCombo, guess)=="Congratulations! Your guess is correct!":
+        clues = getClues(secretCombo, guess)
+        
+        if clues=="win":
             print("Congratulations! Your guess is correct!")
-            return i+1
+            return i
         else:
-            print(getClues(secretCombo, guess))
+            print(clues)
     
-    print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!!! Thanks for playing!")
+    print(f"You ran out of guesses. The answer was {colourOutput(secretCombo)}. GAME OVER!")
     return "DNF"
 
 def runGame():
-    run = True
-    while(run):  
-        secretCombo = genCombo()[0]
+    while(True): 
+        secretCombo = genCombo()
         instructions()
         name = mastermindDebug(secretCombo)
         guesses = str(playRound(secretCombo))
@@ -190,22 +163,16 @@ def runGame():
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
             printLeader(1000000)
         if input("would you like to play again? (y/N)").lower()!="y":
-            run = False
+            break 
+    saveLeader()
+    print("Thanks for playing!")
     
 def mastermindDebug(secretCombo):
     name = input("enter your name: ")
     if name.lower() in ["admin"]:
         print(colourOutput(secretCombo))
-        print(f"Hi {name}, get ready to play!")
-        return name
     print(f"Hi {name}, get ready to play!")
     return name
-
-with open(leaderboardPath, 'w') as f:    
-    for entry in leaderboard:
-        guesses = entry[0]
-        name = entry[1]
-        f.write(f"{guesses} {name}\n")
 
 if __name__ == '__main__':
     runGame()
