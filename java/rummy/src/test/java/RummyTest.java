@@ -41,7 +41,26 @@ public class RummyTest {
     public void testSortHand(){
         String[] hand = {"10H", "3H", "2D", "10S", "3D", "1S", "2S", "3S", "4S", "3C"};
         String[] sort = {"1S", "2D", "2S", "3C", "3D", "3H", "3S", "4S", "10H", "10S"};
+        String[] hand2 = {"8H", "4S", "2C", "7D", "4D", "9S", "7C", "8D", "2H", "9D"};
+        String[] sort2 = {"2C", "2H", "4D", "4S", "7C", "7D", "8D", "8H", "9D", "9S"};
+        String[] hand3 = {"6S", "10D", "3H", "1C", "10H", "6D", "3C", "1D", "6H", "3S"};
+        String[] sort3 = {"1C", "1D", "3C", "3H", "3S", "6D", "6H", "6S", "10D", "10H"};
         assertArrayEquals(sort, Rummy.sortHand(hand));
+        assertArrayEquals(sort2, Rummy.sortHand(hand2));
+        assertArrayEquals(sort3, Rummy.sortHand(hand3));
+    }
+
+     @Test
+    public void testSorter(){
+        String[] hand = {"10H", "3H", "2D", "10S", "3D", "1S", "2S", "3S", "4S", "3C"};
+        String[] sort = {"1S", "2D", "2S", "3C", "3D", "3H", "3S", "4S", "10H", "10S"};
+        String[] hand2 = {"8H", "4S", "2C", "7D", "4D", "9S", "7C", "8D", "2H", "9D"};
+        String[] sort2 = {"2C", "2H", "4D", "4S", "7C", "7D", "8D", "8H", "9D", "9S"};
+        String[] hand3 = {"6S", "10D", "3H", "1C", "10H", "6D", "3C", "1D", "6H", "3S"};
+        String[] sort3 = {"1C", "1D", "3C", "3H", "3S", "6D", "6H", "6S", "10D", "10H"};
+        assertArrayEquals(sort, Rummy.sorter(hand));
+        assertArrayEquals(sort2, Rummy.sorter(hand2));
+        assertArrayEquals(sort3, Rummy.sorter(hand3));
     }
 
     @Test

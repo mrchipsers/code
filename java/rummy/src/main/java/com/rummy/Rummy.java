@@ -1,29 +1,17 @@
 package com.rummy;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 public class Rummy{
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        String[] deck = buildDeck();
-        System.out.println(Arrays.toString(deck));
-        //shuffleDeck(deck);
-        
-        //String[] hand = dealHand(deck);
-        //sortHand(hand);
-        
-        //print(hand);
-        //System.out.println((int)"123".charAt(0));
-        //System.out.println((int)"123".charAt(1));
-        //System.out.println((int)"123".charAt(2));
-        
+        runGame();
     }
 
     public static void print(String[] input){
         for (int i = 0; i<input.length; i++){
             System.out.print(input[i]);
             if (i!=input.length-1){
-                System.out.print(",");
+                System.out.print(", ");
             }else{
                 System.out.println();
             }
@@ -97,16 +85,25 @@ public class Rummy{
         while (repeat){
             repeat=false;
             for (int i = 0; i<(hand.length-1); i++){
-                if (cardNum(hand[i])>cardNum(hand[i+1])){
+                if (cardNum(hand[i])>cardNum(hand[i+1]) || cardNum(hand[i])==cardNum(hand[i+1]) && cardSuit(hand[i])>cardSuit(hand[i+1])){
                     repeat = true;
                     String temp = hand[i];
                     hand[i] = hand[i+1];
                     hand[i+1] = temp;
-                } else if (cardNum(hand[i])==cardNum(hand[i+1]) && cardSuit(hand[i])>cardSuit(hand[i+1])){
-                    repeat = true;
+                }
+            }
+        }
+        return hand;
+    }
+
+    public static String[] sorter(String[] hand){
+        int n = hand.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (cardNum(hand[i])>cardNum(hand[j]) || cardNum(hand[i])==cardNum(hand[j]) && cardSuit(hand[i])>cardSuit(hand[j])) {
                     String temp = hand[i];
-                    hand[i] = hand[i+1];
-                    hand[i+1] = temp;
+                    hand[i] = hand[j];
+                    hand[j] = temp;
                 }
             }
         }
@@ -192,14 +189,15 @@ public class Rummy{
     public static int playMeld(String[] cardArray){
         int score = 0;
         while (true){
-            System.out.println("Do you have any cards to play? (Yes/no)");
+            System.out.println("Do you have any cards to play? (yes/No)");
             String confirm = input.nextLine();
-            if (confirm.toLowerCase() != "yes"){
+            if (!confirm.toLowerCase().equals("yes")){
                 break;
             }
             String[] meld = chooseMeld(cardArray);
             score = assessMeld(meld);
         }
+        System.out.println("your score for this round: "+score);
         return score;
     }
 
@@ -212,5 +210,50 @@ public class Rummy{
         return true;
     }
 
+    public static int runRound(){
+        String[] deck = buildDeck();
+        shuffleDeck(deck);
+        System.out.println("Your hand is: ");
+        String[] hand = sortHand(dealHand(deck));
+        print(hand);
+        System.out.println("Would you like to swap any of your cards? (yes/No)");
+        String confirm = input.nextLine();
+        if (confirm.toLowerCase().equals("yes")){
+            for (int i = 0; i<5;){
+                System.out.println("What card would you like to swap? ");
+                int card = index(hand, input.nextLine());
+                if (card!=-1){
+                    redraw(hand, deck, card);
+                    print(sortHand(hand));
+                    i++;
+                }else{
+                    System.out.println("Please enter a valid card. ");
+                    continue;
+                }
+                System.out.println("Are there any more cards to swap? (yes/No)");
+                if (!input.nextLine().toLowerCase().equals("yes")){
+                    break;
+                }
+            }
+        }
+        int score = playMeld(hand);
+        if (playedAllCards(hand)){
+            score+=25;
+            System.out.println("Congratulations, you received bonus 25 points for playing all your cards!!!");
+        }
+        System.out.println("This is your final score: "+score);
+        return score;
+    }
 
+    public static void runGame(){
+        int score = 0;
+        while (true){
+            score += runRound();
+            System.out.println("Would you like to play again? ");
+            if (input.nextLine().toLowerCase().equals("no")){
+                break;
+            }
+        }
+        System.out.println("Thanks for playing! this is your total score: "+score);
+    }
 }
