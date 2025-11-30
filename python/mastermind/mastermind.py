@@ -35,11 +35,9 @@ def saveLeader():
             f.write(f"{entry[0]} {entry[1]}\n")
 
 def printLeader(max: int):
-    print("posistion   guesses    name")
-    for i, pos in enumerate(leaderboard):
-        if i==max:
-            break
-        print(f"{i+1}{" "*(12-len(f"{i+1}"))}{pos[0]}{" "*(11-len(pos[0]))}{pos[1]}")
+    print("posistion  guesses  name")
+    for i in range(max):
+        print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
 
 class mastermindLexer(Lexer):
     def lex_document(self, document):
@@ -89,18 +87,15 @@ def getClues(secretCombo: str, userGuess: str):
 
     if secretCombo==userGuess:
         return "win"
-    
     for i, col in enumerate(listGuess):
         if col==listAns[i]:
             listAns[i]="-"
             listGuess[i]="_"
             on+=1
-    
     for i, col in enumerate(listGuess):
         if col in listAns:
             listGuess[i]="_"
             close+=1
-
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
    
@@ -124,10 +119,7 @@ def colourOutput(combo: str):
     return colouredWord+RESET   
 
 def isColour(userGuess: str):
-    for i in userGuess:
-        if i not in "roygbw":
-            return False
-    return True
+    return set(userGuess)<=set("roygbw")
 
 def validIn(userGuess):
     while True:
@@ -138,8 +130,7 @@ def validIn(userGuess):
 
 def playRound(secretCombo: str):
     for i in range(10):
-        guess = prompt(f"guess number {i+1}: ", lexer=mastermindLexer()).lower()
-        guess = validIn(guess)
+        guess = validIn(prompt(f"guess number {i+1}: ", lexer=mastermindLexer()).lower())
         clues = getClues(secretCombo, guess)
         
         if clues=="win":
@@ -175,5 +166,4 @@ def mastermindDebug(secretCombo):
     return name
 
 if __name__ == '__main__':
-    runGame()
-    
+    runGame()   

@@ -1,4 +1,12 @@
 0 Genius
+3 sarah
+3 sarah
+3 sarah
+3 sarah
+3 sarah
+3 sarah
+3 sarah
+3 sarah
 8 sarah
 8 sarah
 8 sarah
@@ -19,5 +27,4 @@
 8 sarah
 8 sarah
 8 sarah
-100000000000 sarah
 DNF Idiot

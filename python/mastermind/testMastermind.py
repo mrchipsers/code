@@ -1,25 +1,15 @@
 import mastermind
-import colorama
 import unittest
 
-#if for some reason you terminal does not support escape code colouring, use the colorama version of the colour variables. orange will not work
-
 RED = "\x1b[38;2;232;45;45m" 
-#RED = colorama.Fore.RED
 CORRECTRED = "\x1b[38;2;255;0;0m"
 ORANGE = "\x1b[38;2;255;127;0m"
 YELLOW = "\x1b[38;2;223;223;40m" 
-#YELLOW = colorama.Fore.YELLOW
 GREEN = "\x1b[38;2;71;211;71m" 
-#GREEN = colorama.Fore.GREEN
 BLUE = "\x1b[38;2;0;149;255m" 
-#BLUE = colorama.Fore.BLUE
 WHITE = "\x1b[38;2;255;255;255m" 
-#WHITE = colorama.Fore.WHITE
 BLACK = "\x1b[38;2;0;0;0m" 
-#BLACK = colorama.Fore.BLACK
 RESET = "\x1b[0m" 
-#RESET = colorama.Style.RESET_ALL
 
 class mastermindTest(unittest.TestCase):
     def testConcatClues(self):
@@ -30,7 +20,7 @@ class mastermindTest(unittest.TestCase):
 
     def testgetClues(self):
         self.assertEqual(mastermind.getClues("rgbw", "yoyo"), f"{BLACK}None{RESET}") 
-        self.assertEqual(mastermind.getClues("rgbw", "rgbw"), "Congratulations! Your guess is correct!")
+        self.assertEqual(mastermind.getClues("rgbw", "rgbw"), "win")
         self.assertEqual(mastermind.getClues("rgbw", "rgwb"), f"{CORRECTRED}Correct Correct {WHITE}Close Close {RESET}")
         self.assertEqual(mastermind.getClues("rrbw", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
         self.assertEqual(mastermind.getClues("bwrr", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
