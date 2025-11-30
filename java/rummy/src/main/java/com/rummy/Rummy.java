@@ -195,7 +195,7 @@ public class Rummy{
                 break;
             }
             String[] meld = chooseMeld(cardArray);
-            score = assessMeld(meld);
+            score += assessMeld(meld);
         }
         System.out.println("your score for this round: "+score);
         return score;
