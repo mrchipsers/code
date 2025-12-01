@@ -36,7 +36,7 @@ def saveLeader():
 
 def printLeader(max: int):
     print("posistion  guesses  name")
-    for i in range(max):
+    for i in range(min(max, len(leaderboard))):
         print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
 
 class mastermindLexer(Lexer):
@@ -94,6 +94,7 @@ def getClues(secretCombo: str, userGuess: str):
             on+=1
     for i, col in enumerate(listGuess):
         if col in listAns:
+            listAns[listAns.index(col)]="-"
             listGuess[i]="_"
             close+=1
     if on==0 and close==0:

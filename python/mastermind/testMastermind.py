@@ -22,6 +22,7 @@ class mastermindTest(unittest.TestCase):
         self.assertEqual(mastermind.getClues("rgbw", "yoyo"), f"{BLACK}None{RESET}") 
         self.assertEqual(mastermind.getClues("rgbw", "rgbw"), "win")
         self.assertEqual(mastermind.getClues("rgbw", "rgwb"), f"{CORRECTRED}Correct Correct {WHITE}Close Close {RESET}")
+        self.assertEqual(mastermind.getClues("ywrb", "wwrb"), f"{CORRECTRED}Correct Correct Correct {WHITE}{RESET}")
         self.assertEqual(mastermind.getClues("rrbw", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
         self.assertEqual(mastermind.getClues("bwrr", "rrrr"), f"{CORRECTRED}Correct Correct {WHITE}{RESET}")  
         self.assertEqual(mastermind.getClues("brwr", "rooo"), f"{CORRECTRED}{WHITE}Close {RESET}")  
