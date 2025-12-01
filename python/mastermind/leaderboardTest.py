@@ -31,12 +31,12 @@ def saveLeader():
 
 def printLeader(max: int):
     print("posistion  guesses  name")
-    for i in range(max):
+    for i in range(min(max, len(leaderboard))):
         print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
-
 
 sortLeader(["2", "sarah"])
 
-printLeader(10)
+printLeader(100)
+printLeader(3)
 saveLeader()
 #print(concatClues(2,0))
