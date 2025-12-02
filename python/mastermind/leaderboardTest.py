@@ -11,32 +11,34 @@ RESET = "\x1b[0m"
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath ='python/mastermind/leaderboard.txt' #my computer is messed up
 
-with open(leaderboardPath, 'r') as f:
-    leaderboard = []
-    for i, line in enumerate(f.readlines()):
-        line = line.split()
-        leaderboard.append(line)
 
-def sortLeader(new: list):
+def openLeader():
+    with open(leaderboardPath, 'r') as f:
+        leaderboard = []
+        for line in f.readlines():
+            line = line.split()
+            leaderboard.append(line)
+    return leaderboard
+
+def sortLeader(new: list, leaderboard: list):
     for i, pos in enumerate(leaderboard):
         if pos[0] > new[0]:
             leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
             return
     leaderboard.append(new)
     
-def saveLeader():  
+def saveLeader(leaderboard: list):  
     with open(leaderboardPath, 'w') as f:    
         for entry in leaderboard:
             f.write(f"{entry[0]} {entry[1]}\n")
 
-def printLeader(max: int):
+def printLeader(max: int, leaderboard: list):
     print("posistion  guesses  name")
     for i in range(min(max, len(leaderboard))):
         print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
 
-sortLeader(["2", "sarah"])
-
-printLeader(100)
-printLeader(3)
-saveLeader()
-#print(concatClues(2,0))
+leaderboard = openLeader()
+sortLeader(["2", "sarah"], leaderboard)
+printLeader(100, leaderboard)
+printLeader(3, leaderboard)
+saveLeader(leaderboard)

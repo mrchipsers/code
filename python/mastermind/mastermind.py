@@ -16,25 +16,27 @@ RESET = "\x1b[0m"
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath ='python/mastermind/leaderboard.txt' #my computer is messed up
 
-with open(leaderboardPath, 'r') as f:
-    leaderboard = []
-    for i, line in enumerate(f.readlines()):
-        line = line.split()
-        leaderboard.append(line)
+def openLeader():
+    with open(leaderboardPath, 'r') as f:
+        leaderboard = []
+        for line in f.readlines():
+            line = line.split()
+            leaderboard.append(line)
+    return leaderboard
 
-def sortLeader(new: list):
+def sortLeader(new: list, leaderboard: list):
     for i, pos in enumerate(leaderboard):
         if pos[0] > new[0]:
             leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
             return
     leaderboard.append(new)
     
-def saveLeader():  
+def saveLeader(leaderboard: list):  
     with open(leaderboardPath, 'w') as f:    
         for entry in leaderboard:
             f.write(f"{entry[0]} {entry[1]}\n")
 
-def printLeader(max: int):
+def printLeader(max: int, leaderboard: list):
     print("posistion  guesses  name")
     for i in range(min(max, len(leaderboard))):
         print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
@@ -144,19 +146,20 @@ def playRound(secretCombo: str):
     return "DNF"
 
 def runGame():
+    leaderboard = openLeader()
     while(True): 
         secretCombo = genCombo()
         instructions()
         name = mastermindDebug(secretCombo)
         guesses = str(playRound(secretCombo))
-        sortLeader([guesses, name])
+        sortLeader([guesses, name], leaderboard)
         print("this is the top ten leaderboard: ")
-        printLeader(10)
+        printLeader(10, leaderboard)
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
-            printLeader(1000000)
+            printLeader(1000000, leaderboard)
         if input("would you like to play again? (y/N)").lower()!="y":
             break 
-    saveLeader()
+    saveLeader(leaderboard)
     print("Thanks for playing!")
     
 def mastermindDebug(secretCombo):
