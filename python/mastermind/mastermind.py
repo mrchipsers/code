@@ -24,12 +24,12 @@ def openLeader():
             leaderboard.append(line)
     return leaderboard
 
-def sortLeader(new: list, leaderboard: list):
+def sortLeader(name: str, num: str, leaderboard: list):
     for i, pos in enumerate(leaderboard):
-        if pos[0] > new[0]:
-            leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
+        if pos[0] > num:
+            leaderboard.insert(i, [f"{int(num)+1}", name])
             return
-    leaderboard.append(new)
+    leaderboard.append([num, name])
     
 def saveLeader(leaderboard: list):  
     with open(leaderboardPath, 'w') as f:    
@@ -150,9 +150,7 @@ def runGame():
     while(True): 
         secretCombo = genCombo()
         instructions()
-        name = mastermindDebug(secretCombo)
-        guesses = str(playRound(secretCombo))
-        sortLeader([guesses, name], leaderboard)
+        sortLeader(mastermindDebug(secretCombo), str(playRound(secretCombo)), leaderboard)
         print("this is the top ten leaderboard: ")
         printLeader(10, leaderboard)
         if input("would you like the full leaderboard? (y/N)").lower()=="y":

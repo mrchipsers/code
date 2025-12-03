@@ -127,18 +127,36 @@ public class Rummy{
         return false;
     }
 
-    public static boolean isRun(String[] meld){
-        for (int a = 0; a<meld.length; a++){
-            for (int b = 0; b<meld.length; b++){
-                for (int c = 0; c<meld.length; c++){
-                    if (cardNum(meld[a])==cardNum(meld[b])-1 && cardNum(meld[b])==cardNum(meld[c])-1 && cardSuit(meld[a])==cardSuit(meld[b]) && cardSuit(meld[b])==cardSuit(meld[c]) && cardSuit(meld[c])==cardSuit(meld[a])){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+    public static boolean isRun(String[]meld){
+		//verify the length
+		if(meld.length<3){
+			return false;
+		}
+		//verify suit
+		char suit = cardSuit(meld[0]);
+		for(int i = 0; i<meld.length; i++){
+			if(!(suit==cardSuit(meld[i]))){//if its not the same suit then not a run
+				return false;
+			}
+		}
+		//verify consecutive numbers
+		//all cards now forcement are the same suit and have no dupes
+		sortHand(meld);
+		//meld is now sorted into consecutive (maybe) numbers
+		
+		int count = 0; //the amount of consecutive cards
+		for (int i = 0; i<meld.length;i++){
+			if(cardNum(meld[0])+i == cardNum(meld[i])){
+				count++;
+			}
+		}
+		if (count==meld.length){
+			return true;
+		} else{
+			return false;
+		}
+
+	}
 
     public static int index(String[] cardArray, String card){
         for (int i = 0; i<cardArray.length; i++){

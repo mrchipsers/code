@@ -11,7 +11,6 @@ RESET = "\x1b[0m"
 #leaderboardPath='leaderboard.txt' #this is for normal computers
 leaderboardPath ='python/mastermind/leaderboard.txt' #my computer is messed up
 
-
 def openLeader():
     with open(leaderboardPath, 'r') as f:
         leaderboard = []
@@ -20,12 +19,12 @@ def openLeader():
             leaderboard.append(line)
     return leaderboard
 
-def sortLeader(new: list, leaderboard: list):
+def sortLeader(name: str, num: str, leaderboard: list):
     for i, pos in enumerate(leaderboard):
-        if pos[0] > new[0]:
-            leaderboard.insert(i, [f"{int(new[0])+1}", new[1]])
+        if pos[0] > num:
+            leaderboard.insert(i, [f"{int(num)+1}", name])
             return
-    leaderboard.append(new)
+    leaderboard.append([num, name])
     
 def saveLeader(leaderboard: list):  
     with open(leaderboardPath, 'w') as f:    
@@ -37,8 +36,9 @@ def printLeader(max: int, leaderboard: list):
     for i in range(min(max, len(leaderboard))):
         print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
 
+
 leaderboard = openLeader()
-sortLeader(["2", "sarah"], leaderboard)
+sortLeader("sarah", "2", leaderboard)
 printLeader(100, leaderboard)
 printLeader(3, leaderboard)
 saveLeader(leaderboard)
