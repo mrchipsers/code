@@ -13,8 +13,8 @@ WHITE = "\x1b[38;2;255;255;255m"
 BLACK = "\x1b[38;2;0;0;0m" 
 RESET = "\x1b[0m" 
 
-#leaderboardPath='leaderboard.txt' #this is for normal computers
-leaderboardPath ='python/mastermind/leaderboard.txt' #my computer is messed up
+#leaderboardPath="leaderboard.txt" #this is for normal computers
+leaderboardPath="python/mastermind/leaderboard.txt" #the location of my .git is messing up paths, I dont want to cd to run this
 
 def openLeader():
     with open(leaderboardPath, 'r') as f:
@@ -101,7 +101,6 @@ def getClues(secretCombo: str, userGuess: str):
             close+=1
     if on==0 and close==0:
         return f"{BLACK}None{RESET}"
-   
     return concatClues(on, close)
 
 def colourOutput(combo: str):
@@ -125,11 +124,9 @@ def isColour(userGuess: str):
     return set(userGuess)<=set("roygbw")
 
 def validIn(userGuess):
-    while True:
-        if len(userGuess)==4 and isColour(userGuess):
-            return userGuess
-            
+    while not (len(userGuess) == 4 and isColour(userGuess)):
         userGuess = prompt(ANSI(f"guess a combination that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{WHITE}w{RESET}: "), lexer=mastermindLexer()).lower()
+    return userGuess
 
 def playRound(secretCombo: str):
     for i in range(10):
