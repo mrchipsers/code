@@ -75,14 +75,30 @@ public class RummyTest {
 
     @Test 
     public void testIsRun(){
-        String[] hand3 = {"3S", "4S", "5S", "3H"};
-        String[] hand4 = {"5H", "6H", "4H", "3H", "10S", "3D"};
+        String[] hand3 = {"3S", "4S", "5S"};
+        String[] hand4 = {"5H", "6H", "4H", "3H"};
         String[] handNotEnough = {"3S", "3C", "4H", "5H"};
         String[] HandWrongSuit = {"3S", "4S", "5C", "5D"};
+        String[] all = {"1S", "2S", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
         assertTrue(Rummy.isRun(hand3));
         assertTrue(Rummy.isRun(hand4));
+        assertTrue(Rummy.isRun3(all));
         assertFalse(Rummy.isRun(handNotEnough));
         assertFalse(Rummy.isRun(HandWrongSuit));
+    }
+
+    @Test 
+    public void testIsRun3(){
+        String[] hand3 = {"3S", "4S", "5S"};
+        String[] hand4 = {"5H", "6H", "4H", "3H"};
+        String[] handNotEnough = {"3S", "3C", "4H", "5H"};
+        String[] HandWrongSuit = {"3S", "4S", "5C", "5D"};
+        String[] all = {"1S", "2S", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
+        assertTrue(Rummy.isRun3(hand3));
+        assertTrue(Rummy.isRun3(hand4));
+        assertTrue(Rummy.isRun3(all));
+        assertFalse(Rummy.isRun3(handNotEnough));
+        assertFalse(Rummy.isRun3(HandWrongSuit));
     }
 
     @Test
@@ -100,11 +116,11 @@ public class RummyTest {
 
     @Test
     public void testAssessMeld(){
-        String[] valid1 = {"5H", "6H", "4H", "3H", "10S", "3D"};
-        String[] valid2 = {"3S", "4S", "5S", "3H"};
+        String[] valid1 = {"5H", "6H", "4H", "3H"};
+        String[] valid2 = {"3S", "4S", "5S"};
         String[] invalid = {"3S", "3C", "4H", "5H"};
-        assertEquals(31, Rummy.assessMeld(valid1));
-        assertEquals(15, Rummy.assessMeld(valid2));
+        assertEquals(18, Rummy.assessMeld(valid1));
+        assertEquals(12, Rummy.assessMeld(valid2));
         assertEquals(0, Rummy.assessMeld(invalid));
     }
 

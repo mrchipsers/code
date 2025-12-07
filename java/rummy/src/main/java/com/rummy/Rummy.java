@@ -4,16 +4,17 @@ import java.util.Scanner;
 public class Rummy{
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        runGame();
+        String[] hand = {"1S", "2S", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
+        print(hand);
+        //runGame();
     }
 
     public static void print(String[] input){
         for (int i = 0; i<input.length; i++){
-            System.out.print(input[i]);
             if (i!=input.length-1){
-                System.out.print(", ");
+                System.out.print(input[i]+", ");
             }else{
-                System.out.println();
+                System.out.println(input[i]);
             }
         }
     }
@@ -118,7 +119,7 @@ public class Rummy{
                     count++;
                 } 
             }
-            if (count==3 || count==4){
+            if (count>2){
                 return true;
             }else{
                 count=0;
@@ -127,7 +128,20 @@ public class Rummy{
         return false;
     }
 
-    public static boolean isRun(String[] meld){
+    public static boolean isRun(String[] meld) {
+        if (meld.length < 3) {
+            return false;
+        }
+        sortHand(meld);
+        for (int i = 1; i < meld.length; i++) {
+            if (cardSuit(meld[i]) != cardSuit(meld[0]) || cardNum(meld[i]) != cardNum(meld[0]) + i) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isRun3(String[] meld){
         for (int a = 0; a<meld.length; a++){
             for (int b = 0; b<meld.length; b++){
                 for (int c = 0; c<meld.length; c++){
@@ -152,7 +166,7 @@ public class Rummy{
     public static String[] chooseMeld(String[] hand){
         System.out.print("your hand: ");
         print(hand);
-        System.out.println("How many card will you play? ");
+        System.out.println("How many cards will you play? ");
         int cards = input.nextInt();
         String[] meld = new String[cards];
         for (int i = 0; i<cards;){
