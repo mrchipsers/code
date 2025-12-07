@@ -4,8 +4,9 @@ import java.util.Scanner;
 public class Rummy{
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        String[] hand = {"1S", "2S", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
+        String[] hand = {"1C", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
         print(hand);
+        chooseMeld(hand);
         //runGame();
     }
 
@@ -168,6 +169,7 @@ public class Rummy{
         print(hand);
         System.out.println("How many cards will you play? ");
         int cards = input.nextInt();
+        input.nextLine();
         String[] meld = new String[cards];
         for (int i = 0; i<cards;){
             System.out.println("play your card: ");
@@ -179,6 +181,7 @@ public class Rummy{
             }else{
                 System.out.println("please enter a valid card");
             }
+            print(hand);
         }
         return meld;
     }

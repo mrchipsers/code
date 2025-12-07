@@ -79,7 +79,7 @@ public class RummyTest {
         String[] hand4 = {"5H", "6H", "4H", "3H"};
         String[] handNotEnough = {"3S", "3C", "4H", "5H"};
         String[] HandWrongSuit = {"3S", "4S", "5C", "5D"};
-        String[] all = {"1S", "2S", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
+        String[] all = {"1C", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
         assertTrue(Rummy.isRun(hand3));
         assertTrue(Rummy.isRun(hand4));
         assertTrue(Rummy.isRun3(all));
