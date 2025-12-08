@@ -6,7 +6,7 @@ public class Rummy{
     public static void main(String[] args) {
         String[] hand = {"1C", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
         print(hand);
-        chooseMeld(hand);
+        chooseMeldAlice(hand);
         //runGame();
     }
 
@@ -164,6 +164,37 @@ public class Rummy{
         return -1;
     }
 
+    public static int indexAlice(String[] cardArray, String card){
+        for(int i = 0; i<cardArray.length; i++){
+            if(cardArray[i].equals(card)){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public static String[] chooseMeldAlice(String[] hand){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("This is your hand ");
+        print(hand);
+        System.out.println("How many cards will you play?");
+        int amount = scanner.nextInt();
+        scanner.nextLine();
+        String[] playedCard = new String[amount];
+
+        for(int i = 0; i<amount;i++){
+            int whichCard = i +1;
+            System.out.println("Play your card " + whichCard + ":");
+            playedCard[i] = scanner.nextLine();
+            int  index = indexAlice(hand, playedCard[i]);
+            if(index != -1){
+                hand[index] = "0";
+            }
+            
+        }
+        return playedCard;
+    }
+
     public static String[] chooseMeld(String[] hand){
         System.out.print("your hand: ");
         print(hand);
@@ -203,6 +234,7 @@ public class Rummy{
 
     public static int playMeld(String[] cardArray){
         int score = 0;
+        int total = 0;
         while (true){
             System.out.println("Do you have any cards to play? (yes/No)");
             String confirm = input.nextLine();
@@ -210,10 +242,11 @@ public class Rummy{
                 break;
             }
             String[] meld = chooseMeld(cardArray);
-            score += assessMeld(meld);
+            score = assessMeld(meld);
+            System.out.println("your score for this meld: "+score);
+            total+=score;
         }
-        System.out.println("your score for this round: "+score);
-        return score;
+        return total;
     }
 
     public static boolean playedAllCards(String[] cardArray){
