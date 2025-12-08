@@ -10,7 +10,8 @@ YELLOW = "\x1b[38;2;223;223;40m"
 GREEN = "\x1b[38;2;71;211;71m" 
 BLUE = "\x1b[38;2;0;149;255m" 
 WHITE = "\x1b[38;2;255;255;255m" 
-BLACK = "\x1b[38;2;0;0;0m" 
+BLACK = "\x1b[38;2;127;127;127m" 
+PURPLE = "\x1b[38;2;198;0;209m"
 RESET = "\x1b[0m" 
 
 #leaderboardPath="leaderboard.txt" #this is for normal computers
@@ -28,18 +29,22 @@ def sortLeader(name: str, num: str, leaderboard: list):
     for i, pos in enumerate(leaderboard):
         if pos[0] > num:
             leaderboard.insert(i, [f"{int(num)+1}", name])
-            return
+            return i
     leaderboard.append([num, name])
+    return len(leaderboard)-1
     
 def saveLeader(leaderboard: list):  
     with open(leaderboardPath, 'w') as f:    
         for entry in leaderboard:
             f.write(f"{entry[0]} {entry[1]}\n")
 
-def printLeader(max: int, leaderboard: list):
+def printLeader(max: int, leaderboard: list, you: int):
     print("posistion  guesses  name")
     for i in range(min(max, len(leaderboard))):
-        print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
+        if i==you:
+            print(f"{PURPLE}{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}{RESET}")
+        else:    
+            print(f"{i+1:<11}{leaderboard[i][0]:9}{leaderboard[i][1]}")
 
 class mastermindLexer(Lexer):
     def lex_document(self, document):
@@ -134,7 +139,7 @@ def playRound(secretCombo: str):
         clues = getClues(secretCombo, guess)
         
         if clues=="win":
-            print("Congratulations! Your guess is correct!")
+            print(f"{GREEN}Congratulations! Your guess is correct!{RESET}")
             return i
         else:
             print(clues)
@@ -147,11 +152,11 @@ def runGame():
     while(True): 
         secretCombo = genCombo()
         instructions()
-        sortLeader(mastermindDebug(secretCombo), str(playRound(secretCombo)), leaderboard)
+        you = sortLeader(mastermindDebug(secretCombo), str(playRound(secretCombo)), leaderboard)
         print("this is the top ten leaderboard: ")
-        printLeader(10, leaderboard)
+        printLeader(10, leaderboard, you)
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
-            printLeader(1000000, leaderboard)
+            printLeader(1000000, leaderboard, you)
         if input("would you like to play again? (y/N)").lower()!="y":
             break 
     saveLeader(leaderboard)

@@ -8,7 +8,8 @@ YELLOW = "\x1b[38;2;223;223;40m"
 GREEN = "\x1b[38;2;71;211;71m" 
 BLUE = "\x1b[38;2;0;149;255m" 
 WHITE = "\x1b[38;2;255;255;255m" 
-BLACK = "\x1b[38;2;0;0;0m" 
+BLACK = "\x1b[38;2;127;127;127m" 
+PURPLE = "\x1b[38;2;198;0;209m"
 RESET = "\x1b[0m" 
 
 class mastermindTest(unittest.TestCase):
