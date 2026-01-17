@@ -11,7 +11,9 @@ def primeFinder(n: int):
     return primes
 
 def checker(number: int):
-    for i in range(3, number):
+    if number%2==0 or number%5==0:
+        return False
+    for i in range(3, (number//2),2):
         if number%i==0:
             return False
     return True

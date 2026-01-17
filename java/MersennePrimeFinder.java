@@ -14,7 +14,10 @@ public class MersennePrimeFinder{
         int p = 2;
         for (int i = 0; i<n;){
             long nthPrime = (long)Math.pow(2,p)-1;
-            if (checker(nthPrime)){
+            if (p<32 && checker(nthPrime)){
+                primes[i] = nthPrime;
+                i++;
+            }else if (lltChecker(nthPrime, p)){
                 primes[i] = nthPrime;
                 i++;
             }
@@ -24,11 +27,22 @@ public class MersennePrimeFinder{
     }
 
     public static boolean checker(long number){
-        for (long i = 3; i<number; i++){
+        if (number%2==0 || number%5==0){
+            return false;
+        }
+        for (long i = 3; i<=number/2; i+=2){
             if (number%i==0){
                 return false;
             }
         }
         return true;
+    }
+
+    public static boolean lltChecker(long number, int p){
+        long s = 4;
+        for (int i = 0; i<p-2;i++){
+            s=((s*s)-2)%number;
+        }
+        return s==0;
     }
 }
