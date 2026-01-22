@@ -16,31 +16,32 @@ public class MersennePrimeFinder{
     public static BigInteger[] primeFinder(int n){
         BigInteger[] primes = new BigInteger[n];
         for (int i = 0; i<n;){
-            BigInteger nthPrime = BigInteger.TWO.pow(p).subtract(BigInteger.ONE);
-
-            if (p<32 && checker(nthPrime)){
-                primes[i] = nthPrime;
-                i++;
-                System.out.println(nthPrime.toString());
-
-            }else if (mrtChecker(nthPrime) && lltChecker(nthPrime, p)){
-                primes[i] = nthPrime;
-                i++;
-                System.out.println(nthPrime.toString());
+            if (p<32){
+                long nthPrime = (long)Math.pow(2, p)-1;
+                if (checker(nthPrime)){
+                    primes[i]=BigInteger.valueOf(nthPrime);
+                    i++;
+                    System.out.println(nthPrime);
+                }
+            }else{
+                BigInteger bnthPrime = BigInteger.TWO.pow(p).subtract(BigInteger.ONE);
+                if (mrtChecker(bnthPrime) && lltChecker(bnthPrime, p)){
+                    primes[i] = bnthPrime;
+                    i++;
+                    System.out.println(bnthPrime.toString());
+                }
             }
-
             p++;
         }
         return primes;
     }
 
-    public static boolean checker(BigInteger number){
-        BigInteger five = new BigInteger("5");
-        if (number.mod(BigInteger.TWO).equals(BigInteger.ZERO) || number.mod(five).equals(BigInteger.ZERO)){
+    public static boolean checker(long number){
+        if (number%2==0 || number%5==0){
             return false;
         }
-        for (BigInteger i = new BigInteger("3"); i.compareTo(number.divide(BigInteger.TWO))==-1; i.add(BigInteger.TWO)){
-            if (number.mod(i).equals(BigInteger.ZERO)){
+        for (long i = 3; i<=number/2; i+=2){
+            if (number%i==0){
                 return false;
             }
         }
@@ -70,7 +71,7 @@ public class MersennePrimeFinder{
                 a = new BigInteger(number.subtract(BigInteger.TWO).bitLength(), random);
                 a.add(BigInteger.TWO);
             }
-            BigInteger x=a.pow(d).mod(number);
+            BigInteger x=a.pow(d.intValue()).mod(number);
             BigInteger y=BigInteger.ZERO;
             for(long i=0; i<s; i++){
                 y = x.multiply(x).mod(number);
