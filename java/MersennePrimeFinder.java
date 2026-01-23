@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class MersennePrimeFinder{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
-        System.out.println("how many primes would you like generated? (max of 8 unless you want things to slow down) ");
+        System.out.println("how many primes would you like generated? (max of 52 unless you want to be the proud owner of a position on a wikipedia page,\n max of 20 unless you want to be here forever) ");
         int nOfPrimes = input.nextInt();
         System.out.println(Arrays.toString(primeFinder(nOfPrimes)));
         input.close();
