@@ -181,11 +181,11 @@ def runGame():
         you = sortLeader(mastermindDebug(secretCombo), str(playRound(secretCombo)), leaderboard)
         print("this is the top ten leaderboard: ")
         printLeader(10, leaderboard, you)
+        saveLeader(leaderboard)
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
             printLeader(1000000, leaderboard, you)
         if input("would you like to play again? (y/N)").lower()!="y":
             break 
-    saveLeader(leaderboard)
     print("Thanks for playing!")
 
 # prompts user for name. if the name is one of the admin names, prints combo to facilitate debugging. greets player and returns name for the leaderboard.
