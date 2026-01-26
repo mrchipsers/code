@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 /*program to generate and test possible primes using the Mersenne equation (2^(p)-1). 
 if the number is prime it is printed and added to an array to printed at completion.
-this program uses the Lucas-Lehmer test to determine priminality.*/
+this program uses the Lucas-Lehmer test to determine priminality. (https://en.wikipedia.org/wiki/Lucas%E2%80%93Lehmer_primality_test)*/
 public class MersennePrimeFinder{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
