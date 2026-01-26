@@ -17,14 +17,31 @@ public class MersennePrimeFinder{
         BigInteger[] primes = new BigInteger[nOfPrimes];
         int p = 2;
         for (int i = 0; i<nOfPrimes; p++){
-            BigInteger possiblePrime = BigInteger.TWO.pow(p).subtract(BigInteger.ONE);
-            if (lltChecker(possiblePrime, p)){
-                primes[i]=possiblePrime;
-                i++;
-                System.out.println(possiblePrime.toString());
+            if (bruteChecker(p)){
+                BigInteger possiblePrime = BigInteger.TWO.pow(p).subtract(BigInteger.ONE);
+                if (lltChecker(possiblePrime, p)){
+                    primes[i]=possiblePrime;
+                    i++;
+                    System.out.println(possiblePrime.toString());
+                }
             }
         }
         return primes;
+    }
+
+    public static boolean bruteChecker(int p){
+        if (p == 2){
+            return true;
+        }
+        if (p % 2 == 0 || p<2){
+            return false;
+        }
+        for (int i = 3; (long)i * i <= p; i += 2){
+            if (p % i == 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean lltChecker(BigInteger possiblePrime, int p){
