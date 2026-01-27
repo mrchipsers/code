@@ -30,13 +30,14 @@ public class MersennePrimeFinder{
     }
 
     public static boolean bruteChecker(int p){
+        long maxCheck = (long)Math.sqrt(p);
         if (p == 2){
             return true;
         }
         if (p % 2 == 0 || p<2){
             return false;
         }
-        for (int i = 3; (long)i * i <= p; i += 2){
+        for (int i = 3; i<=maxCheck; i += 2){
             if (p % i == 0){
                 return false;
             }
