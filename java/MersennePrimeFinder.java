@@ -1,23 +1,23 @@
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Scanner;
 /*program to generate and test possible primes using the Mersenne equation (2^(p)-1). 
 if the number is prime it is printed and added to an array to printed at completion.
 this program uses the Lucas-Lehmer test to determine priminality. (https://en.wikipedia.org/wiki/Lucas%E2%80%93Lehmer_primality_test)*/
 public class MersennePrimeFinder{
     public static void main(String[] args){
-        Scanner input = new Scanner(System.in);
+        /*Scanner input = new Scanner(System.in);
         System.out.println("how many primes would you like generated? (max of 52 unless you want to be the proud owner of a position on a wikipedia page, max of 20 unless you want to be here forever) ");
         int nOfPrimes = input.nextInt();
         input.close();
-        System.out.println(Arrays.toString(primeFinder(nOfPrimes)));
+        System.out.println(Arrays.toString(primeFinder(nOfPrimes)));*/
+        System.out.println(Arrays.toString(primeFinder(30)));
     }
 
     public static BigInteger[] primeFinder(int nOfPrimes){
         BigInteger[] primes = new BigInteger[nOfPrimes];
         int p = 2;
         for (int i = 0; i<nOfPrimes; p++){
-            if (bruteChecker(p)){
+            if (/*slightlyBetter*/bruteChecker(p)){
                 BigInteger possiblePrime = BigInteger.TWO.pow(p).subtract(BigInteger.ONE);
                 if (lltChecker(possiblePrime, p)){
                     primes[i]=possiblePrime;
