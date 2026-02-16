@@ -14,6 +14,7 @@ import random
 from prompt_toolkit import ANSI
 from prompt_toolkit.lexers import Lexer
 from prompt_toolkit.shortcuts import prompt
+import getpass
 
 RED = "\x1b[38;2;232;45;45m" 
 CORRECTRED = "\x1b[38;2;255;0;0m"
@@ -26,7 +27,7 @@ BLACK = "\x1b[38;2;127;127;127m"
 PURPLE = "\x1b[38;2;198;0;209m"
 RESET = "\x1b[0m" 
 
-leaderboardPath="leaderboard.txt" 
+leaderboardPath="python/intro-prog-final-project-sacha-louro/leaderboard.txt" 
 
 #opens the leaderboard file and writes the lines as elements in a list, returs said list
 def openLeader():
@@ -97,9 +98,13 @@ After each incorrect guess, you will be given clues categorized as follows:""")
     print(f"{CORRECTRED}Correct{RESET}\t\tOne colour is correct and in the correct position.")
 
 #generates a random len 4 string from the options, returns it
-def genCombo():
-    options = ["r", "o", "y", "g", "b", "w"]
-    return "".join(random.choices(options, k=4))
+def genCombo(multiplayer, round):
+    if multiplayer:
+        return getpass.getpass(prompt=f"player {round%2}, enter your combo: ")
+    else:
+        options = ["r", "o", "y", "g", "b", "w"]
+        return "".join(random.choices(options, k=4))
+    
 
 #makes the clues to be printed from the user's guess. takes number of close and exact entries, returns string with those numbers
 def concatClues(countAt: int, countClose: int):
@@ -173,11 +178,15 @@ def playRound(secretCombo: str):
     return "DNF"
 
 #main function for multiple rounds. gets the leaderboard, combo, plays a round, prints top ten leader, propmts for full leaderboard, prompts to play again. saves leaderboard at end of last round
-def runGame():
+def runGame(multiplayer: bool):
     leaderboard = openLeader()
-    while(True): 
-        secretCombo = genCombo()
+    round=1
+    play=True
+    while(play): 
+        secretCombo=genCombo(multiplayer, round)
         instructions()
+        if multiplayer:
+            print(f"player {(round%2)+1}, get ready to play.")
         you = sortLeader(mastermindDebug(secretCombo), str(playRound(secretCombo)), leaderboard)
         print("this is the top ten leaderboard: ")
         printLeader(10, leaderboard, you)
@@ -185,7 +194,8 @@ def runGame():
         if input("would you like the full leaderboard? (y/N)").lower()=="y":
             printLeader(1000000, leaderboard, you)
         if input("would you like to play again? (y/N)").lower()!="y":
-            break 
+            play=False 
+        round+=1
     print("Thanks for playing!")
 
 # prompts user for name. if the name is one of the admin names, prints combo to facilitate debugging. greets player and returns name for the leaderboard.
@@ -196,5 +206,12 @@ def mastermindDebug(secretCombo):
     print(f"Hi {name}, get ready to play!")
     return name
 
+def multiplayer():
+    nUsers=input("Would you like to play a single or multiplayer game (S/m): ")
+    if nUsers.lower()=="s":
+        runGame(False)
+    else:
+        runGame(True)
+
 if __name__ == '__main__':
-    runGame()   
+    multiplayer()  
