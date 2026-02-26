@@ -98,7 +98,7 @@ After each incorrect guess, you will be given clues categorized as follows:""")
     print(f"{CORRECTRED}Correct{RESET}\t\tOne colour is correct and in the correct position.")
 
 #generates a random len 4 string from the options, returns it
-def genCombo(multiplayer, round):
+def genCombo(multiplayer: bool, round: int):
     if multiplayer:
         return getpass.getpass(prompt=f"player {round%2}, enter your combo: ")
     else:
@@ -157,7 +157,7 @@ def isColour(userGuess: str):
     return set(userGuess)<=set("roygbw")
 
 #makes sure user's guess is correct len and contains only valid elements. reprompts for correct input until input is valid. returns valid input
-def validIn(userGuess):
+def validIn(userGuess: str):
     while not (len(userGuess) == 4 and isColour(userGuess)):
         userGuess = prompt(ANSI(f"guess a combination that is 4 letters long and contains the letters {RED}r{ORANGE}o{YELLOW}y{GREEN}g{BLUE}b{WHITE}w{RESET}: "), lexer=mastermindLexer()).lower()
     return userGuess
@@ -199,7 +199,7 @@ def runGame(multiplayer: bool):
     print("Thanks for playing!")
 
 # prompts user for name. if the name is one of the admin names, prints combo to facilitate debugging. greets player and returns name for the leaderboard.
-def mastermindDebug(secretCombo):
+def mastermindDebug(secretCombo: str):
     name = input("enter your name: ")
     if name.lower() in ["admin", "test"]:
         print(colourOutput(secretCombo))
