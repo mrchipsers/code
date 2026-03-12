@@ -4,119 +4,24 @@ import java.util.Scanner;
 public class Rummy{
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        String[] hand = {"1C", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C"};
-        print(hand);
-        chooseMeld(hand);
-        //runGame();
+        runGame();
     }
 
-    public static void print(String[] input){
+    public static void print(Card[] input){
         for (int i = 0; i<input.length; i++){
-            if (i!=input.length-1){
-                System.out.print(input[i]+", ");
-            }else{
-                System.out.println(input[i]);
-            }
+            System.out.println(input[i].print());
         }
     }
 
-    public static String[] buildDeck(){
-        String[] deck = new String[40];
-        String[] suit = {"S", "H", "C", "D"};
-        int index = 0;
-        for (int i = 0; i<suit.length; i++){
-            for (int j = 1; j<11; j++){
-                deck[index]=j+suit[i];
-                index++;
-            }
-        }
-        return deck;
+    public static void redraw(Card[] hand, Deck deck, int position){
+        hand[position]=Deck.dealCard(deck);
     }
 
-    public static void shuffleDeck(String[] cardArray){
-        Random random = new Random();
-        for (int i = 0; i<40; i++){
-            int index = random.nextInt(40);
-            String temp = cardArray[i];
-            cardArray[i] = cardArray[index];
-            cardArray[index] = temp;
-        }
-    }
-
-    public static String dealCard(String[] cardArray){
-        for (int i = 0; i<cardArray.length; i++){
-            if (cardArray[i]!="0"){
-                String card = cardArray[i];
-                cardArray[i]="0";
-                return card;
-            }
-        }
-        return "nothing left";
-    }
-
-    public static String[] dealHand(String[] cardArray){
-        String[] hand = new String[10];
-        for (int i = 0; i<10; i++){
-            hand[i]=dealCard(cardArray);
-        }
-        return hand;
-    }
-
-    public static void redraw(String[] hand, String[] deck, int position){
-        hand[position]=dealCard(deck);
-    }
-
-    public static char cardSuit(String card){
-        if (card.charAt(1)=='0'){
-            return card.charAt(2);
-        }else{
-            return card.charAt(1);
-        }
-    }
-
-    public static int cardNum(String card){
-        if (card.charAt(0)=='1' && card.charAt(1)=='0') {
-            return 10;
-        } else{
-            return (int) card.charAt(0)-'0';
-        }
-    }
-
-    public static String[] sortHand(String[] hand){
-        boolean repeat=true;
-        while (repeat){
-            repeat=false;
-            for (int i = 0; i<(hand.length-1); i++){
-                if (cardNum(hand[i])>cardNum(hand[i+1]) || cardNum(hand[i])==cardNum(hand[i+1]) && cardSuit(hand[i])>cardSuit(hand[i+1])){
-                    repeat = true;
-                    String temp = hand[i];
-                    hand[i] = hand[i+1];
-                    hand[i+1] = temp;
-                }
-            }
-        }
-        return hand;
-    }
-
-    public static String[] sorter(String[] hand){
-        int n = hand.length;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-                if (cardNum(hand[i])>cardNum(hand[j]) || cardNum(hand[i])==cardNum(hand[j]) && cardSuit(hand[i])>cardSuit(hand[j])) {
-                    String temp = hand[i];
-                    hand[i] = hand[j];
-                    hand[j] = temp;
-                }
-            }
-        }
-        return hand;
-    }
-
-    public static boolean isSet(String[] meld){
+    public static boolean isSet(Card[] meld){
         int count = 0;
         for (int a = 0; a<meld.length; a++){
             for (int b = 0; b<meld.length; b++){
-                if (cardNum(meld[a])==cardNum(meld[b])){
+                if (Card.cardNum(meld[a])==Card.cardNum(meld[b])){
                     count++;
                 } 
             }
@@ -129,24 +34,24 @@ public class Rummy{
         return false;
     }
 
-    public static boolean isRun(String[] meld) {
-        if (meld.length < 3) {
+    public static boolean isRun(Deck meld) {
+        if (meld.getDeck().length < 3) {
             return false;
         }
-        sortHand(meld);
-        for (int i = 1; i < meld.length; i++) {
-            if (cardSuit(meld[i]) != cardSuit(meld[0]) || cardNum(meld[i]) != cardNum(meld[0]) + i) {
+        Deck.sortHand(meld);
+        for (int i = 1; i < meld.getDeck().length; i++) {
+            if (Card.cardSuit(meld[i]) != Card.cardSuit(meld[0]) || Card.cardNum(meld[i]) != Card.cardNum(meld[0]) + i) {
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean isRun3(String[] meld){
+    public static boolean isRun3(Card[] meld){
         for (int a = 0; a<meld.length; a++){
             for (int b = 0; b<meld.length; b++){
                 for (int c = 0; c<meld.length; c++){
-                    if (cardNum(meld[a])==cardNum(meld[b])-1 && cardNum(meld[b])==cardNum(meld[c])-1 && cardSuit(meld[a])==cardSuit(meld[b]) && cardSuit(meld[b])==cardSuit(meld[c]) && cardSuit(meld[c])==cardSuit(meld[a])){
+                    if (Card.cardNum(meld[a])==Card.cardNum(meld[b])-1 && Card.cardNum(meld[b])==Card.cardNum(meld[c])-1 && Card.cardSuit(meld[a])==Card.cardSuit(meld[b]) && Card.cardSuit(meld[b])==Card.cardSuit(meld[c]) && Card.cardSuit(meld[c])==Card.cardSuit(meld[a])){
                         return true;
                     }
                 }
@@ -155,7 +60,7 @@ public class Rummy{
         return false;
     }
 
-    public static int index(String[] cardArray, String card){
+    public static int index(Card[] cardArray, Card card){
         for (int i = 0; i<cardArray.length; i++){
             if (cardArray[i].equals(card)){
                 return i;
@@ -164,19 +69,27 @@ public class Rummy{
         return -1;
     }
 
-    public static String[] chooseMeld(String[] hand){
+    public static Card selectCard(){
+        System.out.println("Enter card number: ");
+        int number=input.nextInt();
+        System.out.println("Enter card suit: ");
+        char suit=input.nextLine().charAt(0);
+        return new Card(number, suit);
+    }
+
+    public static Card[] chooseMeld(Card[] hand){
         System.out.print("your hand: ");
         print(hand);
         System.out.println("How many cards will you play? ");
         int cards = input.nextInt();
         input.nextLine();
-        String[] meld = new String[cards];
+        Card[] meld = new Card[cards];
         for (int i = 0; i<cards;){
             System.out.println("play your card: ");
-            meld[i]=input.nextLine();
+            meld[i]=selectCard();
             int index = index(hand, meld[i]);
             if(index!=-1){
-                hand[index]="0";
+                hand[index]=null;
                 i++;
             }else{
                 System.out.println("please enter a valid card");
@@ -186,22 +99,22 @@ public class Rummy{
         return meld;
     }
 
-    public static int meldScore(String[] meld){
+    public static int meldScore(Card[] meld){
         int sum = 0;
         for (int i = 0; i<meld.length; i++){
-            sum+=cardNum(meld[i]);
+            sum+=Card.cardNum(meld[i]);
         }
         return sum;
     }
 
-    public static int assessMeld(String[] cardArray){
+    public static int assessMeld(Card[] cardArray){
         if (isRun(cardArray) || isSet(cardArray)){
             return meldScore(cardArray);
         }
         return 0;
     }
 
-    public static int playMeld(String[] cardArray){
+    public static int playMeld(Card[] cardArray){
         int score = 0;
         while (true){
             System.out.println("Do you have any cards to play? (yes/No)");
@@ -209,34 +122,79 @@ public class Rummy{
             if (!confirm.toLowerCase().equals("yes")){
                 break;
             }
-            String[] meld = chooseMeld(cardArray);
+            Card[] meld = chooseMeld(cardArray);
             score += assessMeld(meld);
         }
         System.out.println("your score for this round: "+score);
         return score;
     }
 
-    public static boolean playedAllCards(String[] cardArray){
+    public static boolean playedAllCards(Card[] cardArray){
         for (int i = 0; i<cardArray.length; i++){
-            if (cardArray[i]!="0"){
+            if (cardArray[i]!=null){
                 return false;
             }
         }
         return true;
     }
 
+    public static void shuffleDeck(Deck cardArray){
+        Random random = new Random();
+        for (int i = 0; i<40; i++){
+            int index = random.nextInt(40);
+            Card temp = cardArray.getCard(i);
+            cardArray.setCard(i, cardArray.getCard(index));
+            cardArray.setCard(index, temp);
+        }
+    }
+
+    public static Deck dealHand(Deck cardArray){
+        deck hand = new deck;
+        for (int i = 0; i<10; i++){
+            hand[i]=dealCard(cardArray);
+        }
+        return hand;
+    }
+
+    public static Card dealCard(Deck cardArray){
+        for (int i = 0; i<cardArray.getDeck().length; i++){
+            if (cardArray.getCard(i)!=null){
+                Card card = cardArray.getCard(i);
+                cardArray.setCard(i, null);
+                return card;
+            }
+        }
+        return null;
+    }
+
+    public static Deck sortHand(Deck hand){
+        boolean repeat=true;
+        while (repeat){
+            repeat=false;
+            for (int i = 0; i<(hand.getDeck().length-1); i++){
+                if (Card.cardNum(hand[i])>Card.cardNum(hand[i+1]) || Card.cardNum(hand[i])==Card.cardNum(hand[i+1]) && Card.cardSuit(hand[i])>Card.cardSuit(hand[i+1])){
+                    repeat = true;
+                    Card temp = hand.getCard(i);
+                    hand.setCard(i, hand.getCard(+1));
+                    hand.setCard(i+1, temp);
+                }
+            }
+        }
+        return hand;
+    }
+
     public static int runRound(){
-        String[] deck = buildDeck();
+        Deck deck = new Deck();
         shuffleDeck(deck);
         System.out.println("Your hand is: ");
-        String[] hand = sortHand(dealHand(deck));
+        Deck hand = sortHand(dealHand(deck));
         print(hand);
         System.out.println("Would you like to swap any of your cards? (yes/No)");
         String confirm = input.nextLine();
         if (confirm.toLowerCase().equals("yes")){
             for (int i = 0; i<5;){
                 System.out.println("What card would you like to swap? ");
-                int card = index(hand, input.nextLine());
+                int card = index(hand, selectCard());
                 if (card!=-1){
                     redraw(hand, deck, card);
                     print(sortHand(hand));
