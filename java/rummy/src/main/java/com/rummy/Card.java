@@ -29,7 +29,7 @@ public class Card {
         return false;
     }
 
-    public String[] print() {
+    public String print() {
         String suitIcon = "";
         String numberIcon = "";
         
@@ -72,13 +72,7 @@ public class Card {
                 numberIcon = " " + this.number;
                 break;
         }
-        String[] card = {
-            colour + "┌------┐", 
-            "|      |",
-            "| " + numberIcon + "" + suitIcon + "  |",
-            "|      |",
-            "└------┘" + RESET
-        };
+        String card = colour + "┌------┐\n|      |\n| " + numberIcon + "" + suitIcon + "  |\n|      |\n└------┘" + RESET;
         return card;
     }
 }

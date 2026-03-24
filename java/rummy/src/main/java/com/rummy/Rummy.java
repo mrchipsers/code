@@ -7,9 +7,9 @@ public class Rummy{
         runGame();
     }
 
-    public static void print(Card[] input){
-        for (int i = 0; i<input.length; i++){
-            System.out.println(input[i].print());
+    public static void print(Deck input){
+        for (int i = 0; i<input.length(); i++){
+            System.out.println(input.getCard(i).print());
         }
     }
 
@@ -47,18 +47,18 @@ public class Rummy{
         return true;
     }
 
-    public static boolean isRun3(Card[] meld){
-        for (int a = 0; a<meld.length; a++){
-            for (int b = 0; b<meld.length; b++){
-                for (int c = 0; c<meld.length; c++){
-                    if (Card.cardNum(meld[a])==Card.cardNum(meld[b])-1 && Card.cardNum(meld[b])==Card.cardNum(meld[c])-1 && Card.cardSuit(meld[a])==Card.cardSuit(meld[b]) && Card.cardSuit(meld[b])==Card.cardSuit(meld[c]) && Card.cardSuit(meld[c])==Card.cardSuit(meld[a])){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+    // public static boolean isRun3(Card[] meld){
+    //     for (int a = 0; a<meld.length; a++){
+    //         for (int b = 0; b<meld.length; b++){
+    //             for (int c = 0; c<meld.length; c++){
+    //                 if (Card.cardNum(meld[a])==Card.cardNum(meld[b])-1 && Card.cardNum(meld[b])==Card.cardNum(meld[c])-1 && Card.cardSuit(meld[a])==Card.cardSuit(meld[b]) && Card.cardSuit(meld[b])==Card.cardSuit(meld[c]) && Card.cardSuit(meld[c])==Card.cardSuit(meld[a])){
+    //                     return true;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 
     public static int index(Card[] cardArray, Card card){
         for (int i = 0; i<cardArray.length; i++){
@@ -149,9 +149,9 @@ public class Rummy{
     }
 
     public static Deck dealHand(Deck cardArray){
-        deck hand = new deck;
+        Deck hand = new Deck();
         for (int i = 0; i<10; i++){
-            hand[i]=dealCard(cardArray);
+            hand[i]=hand.dealCard(cardArray);
         }
         return hand;
     }
