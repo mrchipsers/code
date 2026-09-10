@@ -1,10 +1,12 @@
 def eggs(n):
+    #boxes solutions
     #boxes=-(n//-6)
     boxes = (n+5)//6
-    #or
+    #empty solutions
     #empty=-(n%-6)
     empty=(boxes*6)-n
     #empty = (6-(n%6))%6
+    #printing logic
     if boxes<2:
         box= "there is 1 box"
     else:
